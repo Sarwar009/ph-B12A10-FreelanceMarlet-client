@@ -1,7 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Navbar = () => {
+
+  const { toggleTheme, theme } = useAuth();
+
+
   const links = (
     <>
       <li>
@@ -54,6 +59,9 @@ const Navbar = () => {
       <div className="navbar-end">
         <a className="btn">Button</a>
       </div>
+      <button onClick={toggleTheme} aria-label="Toggle theme" className="px-2 py-1 border rounded">
+            {theme === 'dark' ? '🌙' : '🔆'}
+          </button>
     </div>
   );
 };
