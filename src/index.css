@@ -1,23 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* Add custom font */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap'); */
-
-/* .font-poppins {
-  font-family: 'Poppins', sans-serif;
-} */
-
-.heading {
-  font: bolder;
-  font-size: 2rem;
-  color: #1F2937; /* Tailwind's gray-800 */
-
+.active {
+  color: brown;
 }
-
-.paragraph {
-  font-size: 1rem;
-  color: #4B5563; /* Tailwind's gray-600 */
-}
-
-

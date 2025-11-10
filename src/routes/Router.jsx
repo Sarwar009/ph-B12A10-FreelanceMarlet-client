@@ -6,6 +6,9 @@ import NotFound from "../pages/NotFound";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ForgotPassword from "../pages/ForgotPassword";
+import AllJobs from "../pages/AllJobs";
+import JobDetails from "../pages/JobDetails";
+import AddJob from "../pages/AddJob";
 
 const Router = createBrowserRouter([
     
@@ -15,6 +18,18 @@ const Router = createBrowserRouter([
             {
                 path: '/',
                 element: <Home />
+            },
+            {
+                path: '/allJobs',
+                element: <AllJobs />
+            },
+            {
+                path: '/allJobs/:id',
+                element: <JobDetails />
+            },
+            {
+                path: '/addJob',
+                element: <AddJob />
             }
         ]
     },

@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import AuthContext from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
+  const [jobs, setJobs] = useState ([]);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  const API = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const root = document.documentElement;
@@ -18,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
 
   return (
-    <AuthContext.Provider value={{ toggleTheme, theme }}>
+    <AuthContext.Provider value={{ toggleTheme, theme, jobs, setJobs, API }}>
       {children}
     </AuthContext.Provider>
   );
