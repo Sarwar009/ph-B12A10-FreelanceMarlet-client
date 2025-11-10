@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 
-const JobForm = ({ jobData, setJobData, handleSubmit }) => {
-  const [skillInput, setSkillInput] = useState("");
-  const [reqInput, setReqInput] = useState("");
+const JobForm = ({jobData, setJobData, handleSubmit}) => {
+  const [skillInput, setSkillInput] = useState ('');
+  const [reqInput, setReqInput] = useState ('');
 
   const handleAddSkill = () => {
-    if (skillInput && !jobData.skills.includes(skillInput)) {
-      setJobData({ ...jobData, skills: [...jobData.skills, skillInput] });
-      setSkillInput("");
+    if (skillInput && !jobData.skills.includes (skillInput)) {
+      setJobData ({...jobData, skills: [...jobData.skills, skillInput]});
+      setSkillInput ('');
     }
   };
 
   const handleAddRequirement = () => {
-    if (reqInput && !jobData.requirements.includes(reqInput)) {
-      setJobData({ ...jobData, requirements: [...jobData.requirements, reqInput] });
-      setReqInput("");
+    if (reqInput && !jobData.requirements.includes (reqInput)) {
+      setJobData ({
+        ...jobData,
+        requirements: [...jobData.requirements, reqInput],
+      });
+      setReqInput ('');
     }
   };
 
@@ -27,7 +30,7 @@ const JobForm = ({ jobData, setJobData, handleSubmit }) => {
           placeholder="Job Title"
           className="input-field"
           value={jobData.title}
-          onChange={(e) => setJobData({ ...jobData, title: e.target.value })}
+          onChange={e => setJobData ({...jobData, title: e.target.value})}
           required
         />
         <input
@@ -35,26 +38,34 @@ const JobForm = ({ jobData, setJobData, handleSubmit }) => {
           placeholder="Posted By"
           className="input-field"
           value={jobData.postedBy}
-          onChange={(e) => setJobData({ ...jobData, postedBy: e.target.value })}
+          onChange={e => setJobData ({...jobData, postedBy: e.target.value})}
           required
         />
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <input
-          type="text"
-          placeholder="Category"
+        <select
           className="input-field"
           value={jobData.category}
-          onChange={(e) => setJobData({ ...jobData, category: e.target.value })}
+          onChange={e => setJobData ({...jobData, category: e.target.value})}
           required
-        />
+        >
+          <option value="">Select Category</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Graphic Design">Graphic Design</option>
+          <option value="Digital Marketing">Digital Marketing</option>
+          <option value="Content Writing">Content Writing</option>
+          <option value="App Development">App Development</option>
+          <option value="Video Editing">Video Editing</option>
+          <option value="Data Entry">Data Entry</option>
+        </select>
+
         <input
           type="email"
           placeholder="User Email"
           className="input-field"
           value={jobData.userEmail}
-          onChange={(e) => setJobData({ ...jobData, userEmail: e.target.value })}
+          onChange={e => setJobData ({...jobData, userEmail: e.target.value})}
           required
         />
       </div>
@@ -64,7 +75,7 @@ const JobForm = ({ jobData, setJobData, handleSubmit }) => {
         placeholder="Job Summary"
         className="input-field resize-none h-24"
         value={jobData.summary}
-        onChange={(e) => setJobData({ ...jobData, summary: e.target.value })}
+        onChange={e => setJobData ({...jobData, summary: e.target.value})}
         required
       />
       <input
@@ -72,15 +83,18 @@ const JobForm = ({ jobData, setJobData, handleSubmit }) => {
         placeholder="Cover Image URL"
         className="input-field"
         value={jobData.coverImage}
-        onChange={(e) => setJobData({ ...jobData, coverImage: e.target.value })}
+        onChange={e => setJobData ({...jobData, coverImage: e.target.value})}
       />
 
       {/* Skills */}
       <div>
         <label className="font-semibold text-gray-700">Skills</label>
         <div className="flex gap-2 mt-2 flex-wrap">
-          {jobData.skills.map((skill, i) => (
-            <span key={i} className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm">
+          {jobData.skills.map ((skill, i) => (
+            <span
+              key={i}
+              className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm"
+            >
               {skill}
             </span>
           ))}
@@ -91,7 +105,7 @@ const JobForm = ({ jobData, setJobData, handleSubmit }) => {
             placeholder="Add Skill"
             className="input-field flex-1"
             value={skillInput}
-            onChange={(e) => setSkillInput(e.target.value)}
+            onChange={e => setSkillInput (e.target.value)}
           />
           <button type="button" onClick={handleAddSkill} className="btn-indigo">
             Add
@@ -103,8 +117,11 @@ const JobForm = ({ jobData, setJobData, handleSubmit }) => {
       <div>
         <label className="font-semibold text-gray-700">Requirements</label>
         <div className="flex gap-2 mt-2 flex-wrap">
-          {jobData.requirements.map((req, i) => (
-            <span key={i} className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
+          {jobData.requirements.map ((req, i) => (
+            <span
+              key={i}
+              className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
+            >
               {req}
             </span>
           ))}
@@ -115,9 +132,13 @@ const JobForm = ({ jobData, setJobData, handleSubmit }) => {
             placeholder="Add Requirement"
             className="input-field flex-1"
             value={reqInput}
-            onChange={(e) => setReqInput(e.target.value)}
+            onChange={e => setReqInput (e.target.value)}
           />
-          <button type="button" onClick={handleAddRequirement} className="btn-indigo">
+          <button
+            type="button"
+            onClick={handleAddRequirement}
+            className="btn-indigo"
+          >
             Add
           </button>
         </div>
@@ -130,42 +151,39 @@ const JobForm = ({ jobData, setJobData, handleSubmit }) => {
           placeholder="Experience"
           className="input-field"
           value={jobData.experience}
-          onChange={(e) => setJobData({ ...jobData, experience: e.target.value })}
+          onChange={e => setJobData ({...jobData, experience: e.target.value})}
         />
         <input
           type="text"
           placeholder="Job Type (Full-time/Part-time)"
           className="input-field"
           value={jobData.jobType}
-          onChange={(e) => setJobData({ ...jobData, jobType: e.target.value })}
+          onChange={e => setJobData ({...jobData, jobType: e.target.value})}
         />
         <input
           type="text"
           placeholder="Location Type (Remote/Onsite)"
           className="input-field"
           value={jobData.locationType}
-          onChange={(e) => setJobData({ ...jobData, locationType: e.target.value })}
+          onChange={e =>
+            setJobData ({...jobData, locationType: e.target.value})}
         />
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         <input
-          type="date"
-          placeholder="Posted Date"
-          className="input-field"
-          value={jobData.postedDate}
-          onChange={(e) => setJobData({ ...jobData, postedDate: e.target.value })}
-        />
-        <input
           type="text"
           placeholder="Salary Range"
           className="input-field"
           value={jobData.salaryRange}
-          onChange={(e) => setJobData({ ...jobData, salaryRange: e.target.value })}
+          onChange={e => setJobData ({...jobData, salaryRange: e.target.value})}
         />
       </div>
 
-      <button type="submit" className="btn-indigo w-full py-3 text-white font-semibold rounded-2xl shadow-lg hover:bg-indigo-600 transition">
+      <button
+        type="submit"
+        className="btn-indigo w-full py-3 text-white font-semibold rounded-2xl shadow-lg hover:bg-indigo-600 transition"
+      >
         Post Job
       </button>
     </form>
