@@ -5,6 +5,7 @@ import FilterBar from '../components/AllJobs/Filter';
 import {motion} from 'framer-motion';
 import axios from 'axios';
 import {useAuth} from '../contexts/AuthContext';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 const Home = () => {
   const {API, jobs, setJobs} = useAuth ();
@@ -61,7 +62,7 @@ const Home = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-spinner text-warning" />
+        <LoadingSpinner />
       </div>
     );
   }

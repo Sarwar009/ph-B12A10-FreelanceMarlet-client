@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <div className="navbar shadow-sm">
       <div className="navbar-start">
-        <div className="dropdown">
+        <div className="dropdown ">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -46,38 +46,52 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-black rounded-box mt-3 w-52 p-2 shadow z-10"
           >
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl header">Freelance Market</a>
+        <Link to='/' className="btn btn-ghost text-xl header">Freelance Market</Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
+        
       </div>
-      {user ? (
-  <div className="flex items-center gap-3">
-    <img src={user.photoURL} alt={user.displayName} className="w-8 h-8 rounded-full"/>
-    <button onClick={logout} className="btn btn-sm">Log Out</button>
-  </div>
-) : (
-  <div className="flex gap-3">
-    <Link to="/login" className="btn btn-sm">Login</Link>
-    <Link to="/register" className="btn btn-sm">Register</Link>
-  </div>
-)}
-      <div className="flex items-center gap-3 rounded-3xl p-1">
-        <label className="swap swap-rotate cursor-pointer">
-          <input
-            type="checkbox"
-            className="hidden"
-            checked={theme === "dark"}
-            onChange={toggleTheme}
-          />
-          <span className="w-8 h-8 swap-off">🔆</span>
-          <span className="swap-on w-8 h-8">🌙</span>
-        </label>
+
+      <div className="flex flex-row navbar-end">
+        {user ? (
+          <div className="items-center gap-3 flex">
+            <img
+              src={user.photoURL}
+              alt={user.displayName}
+              className="w-8 h-8 rounded-full"
+            />
+            <button onClick={logout} className="btn btn-sm hidden md:flex">
+              Log Out
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-3">
+            <Link to="/login" className="btn btn-sm">
+              Login
+            </Link>
+            <Link to="/register" className="btn btn-sm">
+              Register
+            </Link>
+          </div>
+        )}
+        <div className="flex gap-3 rounded-3xl p-1">
+          <label className="swap swap-rotate cursor-pointer">
+            <input
+              type="checkbox"
+              className="hidden"
+              checked={theme === "dark"}
+              onChange={toggleTheme}
+            />
+            <span className="w-8 h-8 swap-off p-1">🔆</span>
+            <span className="swap-on w-8 h-8 p-1">🌙</span>
+          </label>
+        </div>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import JobCard from "../components/AllJobs/JobCard";
 import { useNavigate } from "react-router";
+import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 export default function Home() {
   const { jobs, setJobs, API, loading } = useAuth();
@@ -36,7 +37,7 @@ export default function Home() {
       setRecentJobs(latestSix);
     }
   }, [jobs]);
-if (loading) return <div className="p-4 text-center">Loading...</div>;
+if (loading) return <div className="p-4 text-center"><LoadingSpinner text="Loading..." /></div>;
 
   return (
     <div className="w-full overflow-hidden">

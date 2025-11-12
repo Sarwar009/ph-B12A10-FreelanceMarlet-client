@@ -10,9 +10,13 @@ const FilterBar = ({
 }) => {
   return (
     <div>
-      <h3 className="text-3xl font-bold text-center mb-12 text-indigo-800">
-        All Jobs Here
-      </h3>
+      <div className="text-center mb-4 relative pb-1 md:pb-10">
+          <h2 className="text-3xl font-bold inline-block relative">
+            ALL JOBS HERE
+            {/*  line */}
+            <span className="absolute left-1/2 -bottom-2 w-20 h-1 bg-indigo-600 rounded-full -translate-x-1/2"></span>
+          </h2>
+        </div>
       <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-2xl">
 
         {/* Category Filter */}
