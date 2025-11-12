@@ -21,18 +21,19 @@ const Home = () => {
         const res = await axios.get (`${API}/alljobs`);
         const data = res.data;
         console.log (data);
-
         setJobs (data);
         const cats = [...new Set (data.map (job => job.category))];
         setCategories (cats);
       } catch (err) {
         console.error ('Error fetching jobs:', err);
+      } finally {
+        
+    setLoading (false);
       }
     };
 
     loadJobs ();
-    setLoading (false);
-  }, []);
+  }, [setJobs, API]);
 
   useEffect (
     () => {
@@ -66,7 +67,7 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white transition-colors duration-500">
+    <div className="min-h-screen transition-colors duration-500">
       <Banner />
 
       {/* Filtering jobs */}

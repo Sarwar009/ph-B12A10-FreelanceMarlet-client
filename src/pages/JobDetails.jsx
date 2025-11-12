@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 const JobDetails = () => {
   const [job, setJob] = useState(null);
@@ -31,7 +32,25 @@ const JobDetails = () => {
       }
     };
     fetchJob();
-  }, [id]);
+  }, [id,API]);
+
+  const handleDelete = async () => {
+  if (!job?._id) return console.error("Job ID is missing!");
+
+  try {
+    const res = await axios.delete(`${API}/deleteJobs/${job._id}`);
+    console.log("Deleted:", res.data);
+
+    if (res.data.deletedCount > 0) {
+      toast.success("Job deleted successfully!");
+      navigate("/allJobs"); 
+    }
+  } catch (error) {
+    console.log(error);
+    
+    toast.error("Failed to delete job. Check console for details.");
+  }
+};
 
   useEffect(() => {
     document.title = job ? `FreelanceMarket • ${job.title}` : "Job Details";
@@ -41,7 +60,7 @@ const JobDetails = () => {
   if (!job) return <p className="p-8 text-center text-gray-600">Job not found</p>;
 
   return (
-    <div className="mx-auto p-6 space-y-12 text-gray-700 bg-white">
+    <div className="mx-auto p-6 space-y-12 text-gray-700">
 
       {/* Hero Section */}
       <div className="relative rounded-sm overflow-hidden shadow-lg">
@@ -59,6 +78,9 @@ const JobDetails = () => {
           </button>
           <button className="bg-white text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition">
             Save
+          </button>
+          <button onClick={handleDelete} className="bg-white text-gray-800 px-4 py-2 rounded-lg shadow hover:bg-gray-100 transition">
+            Delete
           </button>
         </div>
       </div>

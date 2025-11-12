@@ -13,7 +13,7 @@ const FilterBar = ({
       <h3 className="text-3xl font-bold text-center mb-12 text-indigo-800">
         All Jobs Here
       </h3>
-      <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-md">
+      <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-2xl">
 
         {/* Category Filter */}
         <div className="flex items-center gap-3">
@@ -31,7 +31,6 @@ const FilterBar = ({
           </select>
         </div>
 
-        {/* Search Bar */}
         <div className="flex items-center gap-2 w-full md:w-1/2">
           <div className="relative w-full">
             <input

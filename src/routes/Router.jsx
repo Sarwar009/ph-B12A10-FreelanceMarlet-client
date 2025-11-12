@@ -9,6 +9,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import AllJobs from "../pages/AllJobs";
 import JobDetails from "../pages/JobDetails";
 import AddJob from "../pages/AddJob";
+import UpdateJobs from "../pages/UpdateJobs";
 
 const Router = createBrowserRouter([
     
@@ -30,6 +31,10 @@ const Router = createBrowserRouter([
             {
                 path: '/addJob',
                 element: <AddJob />
+            },
+            {
+                path: '/updateJobs/:id',
+                element: <UpdateJobs />
             }
         ]
     },

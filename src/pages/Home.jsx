@@ -4,10 +4,13 @@ import { categories } from "../Data/Data";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import JobCard from "../components/AllJobs/JobCard";
+import { useNavigate } from "react-router";
 
 export default function Home() {
   const { jobs, setJobs, API } = useAuth();
   const [recentJobs, setRecentJobs] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -60,10 +63,10 @@ export default function Home() {
               jobs, find work, and collaborate easily — all in one platform.
             </p>
             <div className="flex gap-4">
-              <button className="btn bg-indigo-600 text-white hover:bg-indigo-700">
+              <button onClick={(e)=> {e.preventDefault(); navigate('/alljobs')}} className="btn bg-indigo-600 text-white hover:bg-indigo-700">
                 Explore Jobs
               </button>
-              <button className="btn btn-outline border-indigo-600 text-indigo-600 hover:bg-indigo-50">
+              <button onClick={(e)=> {e.preventDefault(); navigate('/addJob')}} className="btn btn-outline border-indigo-600 text-indigo-600 hover:bg-indigo-50">
                 Create a Job
               </button>
             </div>

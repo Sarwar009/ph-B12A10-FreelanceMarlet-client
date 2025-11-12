@@ -3,9 +3,7 @@ import { NavLink } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
 
 const Navbar = () => {
-
   const { toggleTheme, theme } = useAuth();
-
 
   const links = (
     <>
@@ -59,9 +57,18 @@ const Navbar = () => {
       <div className="navbar-end">
         <a className="btn">Button</a>
       </div>
-      <button onClick={toggleTheme} aria-label="Toggle theme" className="px-2 py-1 border rounded">
-            {theme === 'dark' ? '🌙' : '🔆'}
-          </button>
+      <div className="flex items-center gap-3 rounded-3xl p-1">
+        <label className="swap swap-rotate cursor-pointer">
+          <input
+            type="checkbox"
+            className="hidden"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
+          <span className="w-8 h-8 swap-off">🔆</span>
+          <span className="swap-on w-8 h-8">🌙</span>
+        </label>
+      </div>
     </div>
   );
 };

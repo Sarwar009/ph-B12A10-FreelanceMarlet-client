@@ -1,8 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {useAuth} from '../../contexts/AuthContext';
+import axios from 'axios';
+import AnimatedBtn from '../UpdateJobs/AnimatedBtn';
 
 const JobForm = ({jobData, setJobData, handleSubmit}) => {
   const [skillInput, setSkillInput] = useState ('');
   const [reqInput, setReqInput] = useState ('');
+
+  const {jobs, setJobs, API} = useAuth ();
+
+  useEffect (() => {
+    axios.get (`${API}/allJobs`).then (res => setJobs (res.data));
+  }, []);
 
   const handleAddSkill = () => {
     if (skillInput && !jobData.skills.includes (skillInput)) {
@@ -22,100 +31,117 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 text-gray-700">
       {/* Basic Info */}
       <div className="grid md:grid-cols-2 gap-6">
-        <input
-          type="text"
-          placeholder="Job Title"
-          className="input-field"
-          value={jobData.title}
-          onChange={e => setJobData ({...jobData, title: e.target.value})}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Posted By"
-          className="input-field"
-          value={jobData.postedBy}
-          onChange={e => setJobData ({...jobData, postedBy: e.target.value})}
-          required
-        />
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <select
-          className="input-field"
-          value={jobData.category}
-          onChange={e => setJobData ({...jobData, category: e.target.value})}
-          required
-        >
-          <option value="">Select Category</option>
-          <option value="Web Development">Web Development</option>
-          <option value="Graphic Design">Graphic Design</option>
-          <option value="Digital Marketing">Digital Marketing</option>
-          <option value="Content Writing">Content Writing</option>
-          <option value="App Development">App Development</option>
-          <option value="Video Editing">Video Editing</option>
-          <option value="Data Entry">Data Entry</option>
-        </select>
-
-        <input
-          type="email"
-          placeholder="User Email"
-          className="input-field"
-          value={jobData.userEmail}
-          onChange={e => setJobData ({...jobData, userEmail: e.target.value})}
-          required
-        />
-      </div>
-
-      {/* Summary & Cover Image */}
-      <textarea
-        placeholder="Job Summary"
-        className="input-field resize-none h-24"
-        value={jobData.summary}
-        onChange={e => setJobData ({...jobData, summary: e.target.value})}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Cover Image URL"
-        className="input-field"
-        value={jobData.coverImage}
-        onChange={e => setJobData ({...jobData, coverImage: e.target.value})}
-      />
-
-      {/* Skills */}
-      <div>
-        <label className="font-semibold text-gray-700">Skills</label>
-        <div className="flex gap-2 mt-2 flex-wrap">
-          {jobData.skills.map ((skill, i) => (
-            <span
-              key={i}
-              className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm"
-            >
-              {skill}
-            </span>
-          ))}
+        <div className="flex flex-col">
+          <label className="font-semibold text-gray-700">Job Title:</label>
+          <input
+            type="text"
+            placeholder="Job Title"
+            className="input input-field shadow-sm p-2 bg-white"
+            value={jobData.title}
+            onChange={e => setJobData ({...jobData, title: e.target.value})}
+            required
+          />
         </div>
-        <div className="flex gap-2 mt-2">
+        <div className="flex flex-col">
+          <label className="font-semibold text-gray-700">Posted By:</label>
+          <input
+            type="text"
+            placeholder="Posted By"
+            className="input input-field shadow-sm p-2 bg-white"
+            value={jobData.postedBy}
+            onChange={e => setJobData ({...jobData, postedBy: e.target.value})}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6 ml-0.5">
+
+        <div className="flex flex-col">
+          <label className="font-semibold text-gray-700">Email:</label>
+          <input
+            type="email"
+            placeholder="User Email"
+            className="input input-field shadow-sm p-2 bg-white"
+            value={jobData.userEmail}
+            onChange={e => setJobData ({...jobData, userEmail: e.target.value})}
+            required
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="font-semibold text-gray-700">Cover Image:</label>
+          <input
+            type="text"
+            placeholder="Cover Image URL"
+            className="input input-field shadow-sm p-2 bg-white"
+            value={jobData.coverImage}
+            onChange={e =>
+              setJobData ({...jobData, coverImage: e.target.value})}
+          />
+        </div>
+      </div>
+      <div>
+        <div className="flex flex-col mb-2">
+
+          <label className="font-semibold text-gray-700">
+            Select Category:
+          </label>
+          <select
+            className="input input-field shadow-sm p-2 bg-white cursor-pointer"
+            value={jobData.category}
+            onChange={e => setJobData ({...jobData, category: e.target.value})}
+            required
+          >
+            <option value="">Select Category</option>
+            {jobs.length > 0 &&
+              jobs.map (jobCat => (
+                <option key={jobCat._id} value={jobCat.category}>
+                  {jobCat.category}
+                </option>
+              ))}
+          </select>
+        </div>
+
+        <div>
+            <label className="font-semibold text-gray-700">Add Skills:</label>
+          <div className="flex gap-2 mt-2 flex-wrap">
+            {jobData.skills.map ((skill, i) => (
+              <span
+                key={i}
+                className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+
+        </div>
+        <div className="flex gap-2">
           <input
             type="text"
             placeholder="Add Skill"
-            className="input-field flex-1"
+            className="input input-field shadow-sm p-2 bg-white flex-1"
             value={skillInput}
             onChange={e => setSkillInput (e.target.value)}
           />
-          <button type="button" onClick={handleAddSkill} className="btn-indigo">
-            Add
-          </button>
+            <button
+              type="button"
+              onClick={handleAddSkill}
+              className="btn btn-primary"
+            >
+              Add
+            </button>
         </div>
       </div>
 
       {/* Requirements */}
       <div>
-        <label className="font-semibold text-gray-700">Requirements</label>
+          <label className="font-semibold text-gray-700">
+            Add Requirements:
+          </label>
         <div className="flex gap-2 mt-2 flex-wrap">
           {jobData.requirements.map ((req, i) => (
             <span
@@ -126,66 +152,86 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
             </span>
           ))}
         </div>
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2">
           <input
             type="text"
             placeholder="Add Requirement"
-            className="input-field flex-1"
+            className="input input-field shadow-sm p-2 bg-white flex-1"
             value={reqInput}
             onChange={e => setReqInput (e.target.value)}
           />
+          
           <button
             type="button"
             onClick={handleAddRequirement}
-            className="btn-indigo"
+            className="btn btn-primary"
           >
-            Add
+            Add 
           </button>
         </div>
+        
       </div>
 
       {/* Additional Info */}
-      <div className="grid md:grid-cols-3 gap-6">
-        <input
-          type="text"
-          placeholder="Experience"
-          className="input-field"
-          value={jobData.experience}
-          onChange={e => setJobData ({...jobData, experience: e.target.value})}
-        />
-        <input
-          type="text"
-          placeholder="Job Type (Full-time/Part-time)"
-          className="input-field"
-          value={jobData.jobType}
-          onChange={e => setJobData ({...jobData, jobType: e.target.value})}
-        />
-        <input
-          type="text"
-          placeholder="Location Type (Remote/Onsite)"
-          className="input-field"
-          value={jobData.locationType}
-          onChange={e =>
-            setJobData ({...jobData, locationType: e.target.value})}
-        />
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="flex flex-col">
+          <label className="font-semibold text-gray-700">Experience:</label>
+          <input
+            type="text"
+            placeholder="Experience"
+            className="input input-field shadow-sm p-2 bg-white"
+            value={jobData.experience}
+            onChange={e =>
+              setJobData ({...jobData, experience: e.target.value})}
+          />
+        </div>
+        <div className="flex flex-col">
+
+          <label className="font-semibold text-gray-700">
+            Select Job Type:
+          </label>
+          <select
+            className="input input-field shadow-sm p-2 bg-white"
+            value={jobData.jobType}
+            onChange={e => setJobData ({...jobData, jobType: e.target.value})}
+            required
+          >
+            <option value="">Select Job Type</option>
+            <option value="Remote">Remote</option>
+            <option value="On-site">On-site</option>
+            <option value="Hybrid">Hybrid</option>
+
+          </select>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <input
-          type="text"
-          placeholder="Salary Range"
-          className="input-field"
-          value={jobData.salaryRange}
-          onChange={e => setJobData ({...jobData, salaryRange: e.target.value})}
+        <div className="flex flex-col">
+
+          <label className="font-semibold text-gray-700">Salary Range:</label>
+          <input
+            type="text"
+            placeholder="Salary Range"
+            className="input input-field shadow-sm p-2 bg-white"
+            value={jobData.salaryRange}
+            onChange={e =>
+              setJobData ({...jobData, salaryRange: e.target.value})}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col">
+
+        <label className="font-semibold text-gray-700">Job Summary:</label>
+        <textarea
+          placeholder="Job Summary"
+          className="input-field resize-none h-24 w-full bg-white input shadow-sm"
+          value={jobData.summary}
+          onChange={e => setJobData ({...jobData, summary: e.target.value})}
+          required
         />
       </div>
 
-      <button
-        type="submit"
-        className="btn-indigo w-full py-3 text-white font-semibold rounded-2xl shadow-lg hover:bg-indigo-600 transition"
-      >
-        Post Job
-      </button>
+      <AnimatedBtn text="Update Job" />
     </form>
   );
 };
