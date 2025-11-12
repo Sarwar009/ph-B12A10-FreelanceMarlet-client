@@ -1,6 +1,6 @@
 import React from 'react';
 import {motion} from 'framer-motion';
-import {useNavigate} from 'react-router';
+import { useNavigate} from 'react-router';
 import {X} from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';

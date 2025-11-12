@@ -7,7 +7,7 @@ import JobCard from "../components/AllJobs/JobCard";
 import { useNavigate } from "react-router";
 
 export default function Home() {
-  const { jobs, setJobs, API } = useAuth();
+  const { jobs, setJobs, API, loading } = useAuth();
   const [recentJobs, setRecentJobs] = useState([]);
 
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ export default function Home() {
       setRecentJobs(latestSix);
     }
   }, [jobs]);
+if (loading) return <div className="p-4 text-center">Loading...</div>;
 
   return (
     <div className="w-full overflow-hidden">

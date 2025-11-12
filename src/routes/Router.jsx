@@ -10,6 +10,7 @@ import AllJobs from "../pages/AllJobs";
 import JobDetails from "../pages/JobDetails";
 import AddJob from "../pages/AddJob";
 import UpdateJobs from "../pages/UpdateJobs";
+import ProtectedRoute from "./ProtectedRoute";
 
 const Router = createBrowserRouter([
     
@@ -22,7 +23,7 @@ const Router = createBrowserRouter([
             },
             {
                 path: '/allJobs',
-                element: <AllJobs />
+                element: <ProtectedRoute><AllJobs /></ProtectedRoute>
             },
             {
                 path: '/allJobs/:id',
@@ -30,11 +31,12 @@ const Router = createBrowserRouter([
             },
             {
                 path: '/addJob',
-                element: <AddJob />
+                element: 
+                    <ProtectedRoute><AddJob /></ProtectedRoute>
             },
             {
                 path: '/updateJobs/:id',
-                element: <UpdateJobs />
+                element: <ProtectedRoute><UpdateJobs /></ProtectedRoute>
             }
         ]
     },

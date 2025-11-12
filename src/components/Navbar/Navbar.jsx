@@ -1,9 +1,9 @@
 import React from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
 
 const Navbar = () => {
-  const { toggleTheme, theme } = useAuth();
+  const { toggleTheme, theme, user, logout, loading } = useAuth();
 
   const links = (
     <>
@@ -21,6 +21,8 @@ const Navbar = () => {
       </li>
     </>
   );
+
+  if (loading) return null;
   return (
     <div className="navbar shadow-sm">
       <div className="navbar-start">
@@ -54,9 +56,17 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn">Button</a>
-      </div>
+      {user ? (
+  <div className="flex items-center gap-3">
+    <img src={user.photoURL} alt={user.displayName} className="w-8 h-8 rounded-full"/>
+    <button onClick={logout} className="btn btn-sm">Log Out</button>
+  </div>
+) : (
+  <div className="flex gap-3">
+    <Link to="/login" className="btn btn-sm">Login</Link>
+    <Link to="/register" className="btn btn-sm">Register</Link>
+  </div>
+)}
       <div className="flex items-center gap-3 rounded-3xl p-1">
         <label className="swap swap-rotate cursor-pointer">
           <input

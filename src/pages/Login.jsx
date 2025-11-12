@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {motion} from 'framer-motion';
-import {Link} from 'react-router';
+import {Link, useLocation, useNavigate} from 'react-router';
+import toast from 'react-hot-toast';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Login () {
+  const { login, loginWithGoogle } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const navigate = useNavigate();
+  const location =useLocation()
+
+  const from = location.state?.from?.pathname || "/";
+  
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      toast.success("Login successful!");
+       navigate(from, { replace: true });
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await loginWithGoogle();
+      toast.success("Google login successful!");
+       navigate(from, { replace: true });
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-blue-200 via-purple-200 to-pink-200 px-4">
       <motion.div
@@ -15,7 +48,7 @@ export default function Login () {
           Login
         </h2>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <motion.div
             whileFocus={{scale: 1.05}}
             className="form-control w-full"
@@ -26,7 +59,9 @@ export default function Login () {
               </span>
             </label>
             <input
+            onChange={e => setEmail(e.target.value)}
               type="email"
+              value={email}
               placeholder="Enter your email"
               className="input input-bordered w-full bg-amber-50 text-gray-700 placeholder-gray-500"
               required
@@ -43,7 +78,9 @@ export default function Login () {
               </span>
             </label>
             <input
+            onChange={e => setPassword(e.target.value)}
               type="password"
+              value={password}
               placeholder="Enter your password"
               className="input input-bordered w-full bg-amber-50 text-gray-700 placeholder-gray-500"
               required
@@ -77,6 +114,7 @@ export default function Login () {
         </div>
 
         <motion.button
+        onClick={handleGoogleLogin}
           whileFocus={{scale: 1.05}}
           whileTap={{scale: 0.95}}
           className="btn bg-white text-black border-[#e5e5e5] btn-outline btn-secondary w-full "
@@ -108,7 +146,7 @@ export default function Login () {
               />
             </g>
           </svg>
-          Login with Google
+          Sign in with Google
         </motion.button>
 
         <p className="text-center text-gray-500 mt-4 text-sm">

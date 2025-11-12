@@ -1,10 +1,40 @@
 import React, {useState} from 'react';
 import {motion} from 'framer-motion';
-import {Link} from 'react-router';
-import {Eye, EyeIcon, EyeOff, EyeOffIcon} from 'lucide-react';
+import {Link, replace, useLocation, useNavigate} from 'react-router';
+import {Eye, EyeOff} from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 export default function Register () {
   const [showPass, setShowPass] = useState (false);
+  const { register, validatePassword } = useAuth();
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [photoUrl, setPhotoUrl] = useState('');
+
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/";
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate password
+    const errors = validatePassword(password);
+    if (errors.length > 0) {
+      errors.forEach(err => toast.error(err));
+      return;
+    }
+
+    try {
+      await register(name, email, password);
+      toast.success("Account created successfully!");
+      navigate(from, {replace: true});
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-300 via-purple-200 to-pink-200 px-4">
@@ -25,7 +55,7 @@ export default function Register () {
           Create an Account
         </motion.h2>
 
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
           {/* Name */}
           <motion.div whileFocus={{scale: 1.03}}>
             <label className="label">
@@ -34,8 +64,8 @@ export default function Register () {
               </span>
             </label>
             <input
+            value={name} onChange={e => setName(e.target.value)}
               type="text"
-              name="name"
               placeholder="Your full name"
               className="input input-bordered w-full bg-indigo-50 text-gray-800 placeholder-gray-500 focus:bg-white focus:border-indigo-500 focus:ring focus:ring-indigo-200"
               required
@@ -50,8 +80,8 @@ export default function Register () {
               </span>
             </label>
             <input
+            value={email} onChange={e => setEmail(e.target.value)}
               type="email"
-              name="email"
               placeholder="you@example.com"
               className="input input-bordered w-full bg-indigo-50 text-gray-800 placeholder-gray-500 focus:bg-white focus:border-indigo-500 focus:ring focus:ring-indigo-200"
               required
@@ -65,6 +95,7 @@ export default function Register () {
               </span>
             </label>
             <input
+            value={photoUrl} onChange={e => setPhotoUrl(e.target.value)}
               placeholder="photo url"
               className="input input-bordered w-full bg-indigo-50 text-gray-800 placeholder-gray-500 focus:bg-white focus:border-indigo-500 focus:ring focus:ring-indigo-200"
               required
@@ -80,8 +111,8 @@ export default function Register () {
 
             <div className="relative">
               <input
+              value={password} onChange={e => setPassword(e.target.value)}
                 type={showPass ? 'text' : 'password'}
-                name="password"
                 placeholder="Create a strong password"
                 className="input input-bordered w-full bg-indigo-50 text-gray-800 placeholder-gray-500 focus:bg-white focus:border-indigo-500 focus:ring focus:ring-indigo-200 pr-10 relative z-10"
                 required
