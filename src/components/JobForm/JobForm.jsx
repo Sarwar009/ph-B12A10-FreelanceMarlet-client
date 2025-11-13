@@ -7,11 +7,17 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
   const [skillInput, setSkillInput] = useState ('');
   const [reqInput, setReqInput] = useState ('');
 
-  const {jobs, setJobs, API} = useAuth ();
+  const {jobs, setJobs, API, user} = useAuth ();
 
   useEffect (() => {
     axios.get (`${API}/allJobs`).then (res => setJobs (res.data));
   }, []);
+
+  useEffect(() => {
+    if (user?.email) {
+      setJobData(prev => ({ ...prev, userEmail: user.email }));
+    }
+  }, [user, setJobData]);
 
   const handleAddSkill = () => {
     if (skillInput && !jobData.skills.includes (skillInput)) {
@@ -32,7 +38,6 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 text-gray-700">
-      {/* Basic Info */}
       <div className="grid md:grid-cols-2 gap-6">
         <div className="flex flex-col">
           <label className="font-semibold text-gray-700">Job Title:</label>
@@ -66,8 +71,8 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
             type="email"
             placeholder="User Email"
             className="input input-field shadow-sm p-2 bg-white"
-            value={jobData.userEmail}
-            onChange={e => setJobData ({...jobData, userEmail: e.target.value})}
+            value={jobData.userEmail || ''}
+            readOnly
             required
           />
         </div>
@@ -231,7 +236,7 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
         />
       </div>
 
-      <AnimatedBtn text="Update Job" />
+      <AnimatedBtn text="Post a Job" />
     </form>
   );
 };

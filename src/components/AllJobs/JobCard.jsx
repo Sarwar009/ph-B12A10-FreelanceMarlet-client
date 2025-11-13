@@ -8,7 +8,8 @@ import toast from 'react-hot-toast';
 
 const JobCard = ({job}) => {
 
-  const { API, setJobs} = useAuth ();
+  const { API, setJobs, user} = useAuth ();
+  const isOwner = user?.email === job.userEmail;
 
   const handleDelete = async () => {
     if (!job._id) return console.error("Job ID is missing!");
@@ -43,7 +44,8 @@ const JobCard = ({job}) => {
         />
 
         <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
-        <div className="absolute top-2 right-3 text-xs flex items-center gap-4 drop-shadow">
+        {
+          isOwner && <div className="absolute top-2 right-3 text-xs flex items-center gap-4 drop-shadow">
           <button className="group p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer" 
           onClick={()=> handleDelete()}
           >
@@ -51,6 +53,8 @@ const JobCard = ({job}) => {
           </button>
 
         </div>
+        }
+        
 
         {/* PostedBy + Date */}
         <div className="absolute bottom-2 left-3 text-xs text-white flex items-center gap-4 drop-shadow">

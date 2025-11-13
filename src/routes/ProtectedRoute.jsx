@@ -1,12 +1,13 @@
 import React from 'react'
 import {  Navigate, useLocation } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation(); // get current route
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><LoadingSpinner text='Loading....' /></div>;
   
   return user ? (
     children

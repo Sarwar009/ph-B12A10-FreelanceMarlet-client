@@ -11,6 +11,8 @@ import JobDetails from "../pages/JobDetails";
 import AddJob from "../pages/AddJob";
 import UpdateJobs from "../pages/UpdateJobs";
 import ProtectedRoute from "./ProtectedRoute";
+import MyAddedJobs from "../pages/MyAddedJobs";
+import MyAcceptedJobs from "../pages/MyAcceptedJobs";
 
 const Router = createBrowserRouter([
     
@@ -37,6 +39,14 @@ const Router = createBrowserRouter([
             {
                 path: '/updateJobs/:id',
                 element: <ProtectedRoute><UpdateJobs /></ProtectedRoute>
+            },
+            {
+                path: '/myAddedJobs',
+                element: <ProtectedRoute><MyAddedJobs /></ProtectedRoute>
+            },
+            {
+                path: '/my-accpted-tasks',
+                element: <ProtectedRoute><MyAcceptedJobs /></ProtectedRoute>
             }
         ]
     },
