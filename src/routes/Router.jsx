@@ -14,6 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import MyAddedJobs from "../pages/MyAddedJobs";
 import MyAcceptedJobs from "../pages/MyAcceptedJobs";
 import About from "../pages/About";
+import Contact from "../pages/Contact";
 
 const Router = createBrowserRouter([
     
@@ -27,6 +28,9 @@ const Router = createBrowserRouter([
             {
                 path: '/about',
                 element: <About />
+            },{
+                path: '/contact',
+                element: <Contact />
             },
             {
                 path: '/allJobs',

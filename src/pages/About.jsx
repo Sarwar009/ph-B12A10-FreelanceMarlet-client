@@ -1,113 +1,86 @@
-// src/pages/AboutUs.jsx
+
 import React from "react";
-import { motion } from "framer-motion";
+// import teamImg from "../../assets/team.jpg"; // replace with your real image
+
+import { HandshakeIcon, LightbulbIcon, Rocket, User2 } from "lucide-react";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
-      {/* Hero Section */}
-      <motion.section
-        className="relative bg-indigo-600 dark:bg-indigo-700 text-white py-24 px-6 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">About Us</h1>
-        <p className="text-lg md:text-xl max-w-2xl mx-auto">
-          We are a team of passionate developers building amazing digital experiences.
+    <div className="w-full  ">
+      
+      <div className="py-20 px-5 md:px-20 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-indigo-600 dark:text-indigo-400 animate-fadeIn">
+          About Our Freelance Marketplace
+        </h1>
+        <p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-700 dark:text-gray-300 animate-fadeIn delay-200">
+          Connecting skilled freelancers with amazing opportunities worldwide. Our
+          platform empowers both clients and freelancers to collaborate, grow, and
+          succeed.
         </p>
-      </motion.section>
-
-      {/* Our Mission */}
-      <motion.section
-        className="py-16 px-6 max-w-6xl mx-auto text-center"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <h2 className="text-3xl font-bold mb-4 text-indigo-600 dark:text-indigo-400">Our Mission</h2>
-        <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          To provide high-quality web solutions that empower businesses to grow and succeed online.
+      </div>
+      <div className="py-16 px-5 md:px-20 bg-indigo-50 dark:bg-indigo-900 rounded-lg my-10 mx-5 md:mx-20 shadow-lg">
+        <h2 className="text-3xl font-semibold mb-6 text-center text-indigo-700 dark:text-indigo-300 animate-fadeIn">
+          Our Mission
+        </h2>
+        <p className="text-center text-gray-700 dark:text-gray-200 max-w-3xl mx-auto animate-fadeIn delay-200">
+          To make freelancing simpler, transparent, and more rewarding. We aim to
+          bridge the gap between talent and opportunity, creating a vibrant community
+          where everyone thrives.
         </p>
-      </motion.section>
+      </div>
+      <div className="py-16 px-5 md:px-20 grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+        {[
+          { icon: <User2 className="text-4xl text-indigo-600" />, title: "Global Talent", desc: "Access freelancers from every corner of the world." },
+          { icon: <Rocket className="text-4xl text-indigo-600" />, title: "Fast & Reliable", desc: "Quick project posting and efficient matching." },
+          { icon: <HandshakeIcon className="text-4xl text-indigo-600" />, title: "Secure Payments", desc: "Safe transactions with milestone-based payments." },
+          { icon: <LightbulbIcon className="text-4xl text-indigo-600" />, title: "Innovative Projects", desc: "Work on cutting-edge ideas and tech." },
+        ].map((feature, index) => (
+          <div
+            key={index}
+            className=" p-6 rounded-xl shadow-lg text-center hover:scale-105 transition-transform duration-300 animate-fadeIn"
+          >
+            <div className="mb-4">{feature.icon}</div>
+            <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+            <p>{feature.desc}</p>
+          </div>
+        ))}
+      </div>
 
-      {/* Our Values */}
-      <motion.section
-        className="py-16 px-6 bg-gray-100 dark:bg-gray-800 max-w-6xl mx-auto rounded-3xl"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <h2 className="text-3xl font-bold mb-8 text-center text-indigo-600 dark:text-indigo-400">Our Values</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { title: "Integrity", desc: "We maintain honesty and transparency in all our work." },
-            { title: "Innovation", desc: "We embrace creativity and cutting-edge technology." },
-            { title: "Collaboration", desc: "Teamwork is at the heart of everything we do." },
-          ].map((item, index) => (
-            <motion.div
-              key={index}
-              className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">{item.desc}</p>
-            </motion.div>
-          ))}
+      <div className="py-16 px-5 md:px-20 flex flex-col md:flex-row items-center gap-10">
+        <div className="md:w-1/2 animate-fadeIn">
+          <img
+            src='https://cdn2.stylecraze.com/wp-content/uploads/2018/07/a-women-in-semi-format-attire.jpg.webp'
+            alt="Team"
+            className="rounded-xl shadow-xl w-full object-cover"
+          />
         </div>
-      </motion.section>
-
-      {/* Our Team */}
-      <motion.section
-        className="py-16 px-6 max-w-6xl mx-auto text-center"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <h2 className="text-3xl font-bold mb-8 text-indigo-600 dark:text-indigo-400">Meet the Team</h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            { name: "Alice Johnson", role: "Frontend Developer", img: "https://i.ibb.co/XYZ123/alice.jpg" },
-            { name: "Bob Smith", role: "Backend Developer", img: "https://i.ibb.co/XYZ123/bob.jpg" },
-            { name: "Charlie Lee", role: "UI/UX Designer", img: "https://i.ibb.co/XYZ123/charlie.jpg" },
-            { name: "Dana White", role: "Project Manager", img: "https://i.ibb.co/XYZ123/dana.jpg" },
-          ].map((member, index) => (
-            <motion.div
-              key={index}
-              className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <img src={member.img} alt={member.name} className="w-full h-48 object-cover" />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold">{member.name}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{member.role}</p>
-              </div>
-            </motion.div>
-          ))}
+        <div className="md:w-1/2 animate-fadeIn delay-200">
+          <h2 className="text-3xl font-semibold mb-4 text-indigo-700 dark:text-indigo-300">
+            Meet Our Team
+          </h2>
+          <p className="mb-4">
+            Our dedicated team of developers, designers, and strategists work
+            tirelessly to make freelancing seamless and enjoyable. Passion drives
+            our innovation, and collaboration drives our success.
+          </p>
+          <p>
+            We value transparency, quality, and community above all, building a
+            platform where everyone can thrive.
+          </p>
         </div>
-      </motion.section>
+      </div>
 
-      {/* Contact / Call to Action */}
-      <motion.section
-        className="py-16 px-6 bg-indigo-600 dark:bg-indigo-700 text-white text-center rounded-3xl mx-6"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <h2 className="text-3xl font-bold mb-4">Join Us Today</h2>
-        <p className="mb-6 max-w-2xl mx-auto">
-          Ready to build something amazing with us? Reach out and let's get started!
+      <div className="py-16 px-5 md:px-20 text-center bg-indigo-600 dark:bg-indigo-700 text-white rounded-lg my-10 mx-5 md:mx-20 animate-fadeIn">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          Ready to Join the Community?
+        </h2>
+        <p className="mb-6 text-lg md:text-xl">
+          Whether you are a client or freelancer, start your journey with us today!
         </p>
-        <button className="px-6 py-3 bg-white text-indigo-600 rounded-full font-semibold hover:bg-gray-200 transition">
-          Contact Us
+        <button className="bg-white text-indigo-600 font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition">
+          Get Started
         </button>
-      </motion.section>
+      </div>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import axios from "axios";
 import JobCard from "../components/AllJobs/JobCard";
 import { useNavigate } from "react-router";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
+import Button from "daisyui/components/button";
 
 export default function Home() {
   const { jobs, setJobs, API, loading } = useAuth();
@@ -170,6 +171,8 @@ if (loading) return <div className="p-4 text-center"><LoadingSpinner text="Loadi
             make the job hiring and working process smooth, transparent, and
             rewarding for everyone.
           </p>
+          
+          <button className="btn btn-accent mt-1 md:mt-2" onClick={()=> navigate('/about')} >More Details...</button>
         </motion.div>
       </div>
     </div>
