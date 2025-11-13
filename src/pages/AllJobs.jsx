@@ -15,6 +15,7 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState ('');
   const [searchQuery, setSearchQuery] = useState ('');
   const [loading, setLoading] = useState (true);
+  const [dateFilter, setDateFilter] = useState("");
 
   useEffect (() => {
     const loadJobs = async () => {
@@ -36,28 +37,30 @@ const Home = () => {
     loadJobs ();
   }, [setJobs, API]);
 
-  useEffect (
-    () => {
-      let updated = [...jobs];
+   useEffect(() => {
+    let tempJobs = [...jobs];
 
-      // category filter
-      if (selectedCategory) {
-        updated = updated.filter (job => job.category === selectedCategory);
-      }
+    // Filter by category
+    if (selectedCategory) {
+      tempJobs = tempJobs.filter(job => job.category === selectedCategory);
+    }
 
-      // search filter
-      if (searchQuery.trim () !== '') {
-        updated = updated.filter (job =>
-          job.title.toLowerCase ().includes (searchQuery.toLowerCase ())
-        );
-      }
+    // Filter by search query
+    if (searchQuery) {
+      tempJobs = tempJobs.filter(job =>
+        job.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
-      setFilteredJobs (updated);
+    // Sort by date
+    if (dateFilter === "newest") {
+      tempJobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+    } else if (dateFilter === "oldest") {
+      tempJobs.sort((a, b) => new Date(a.postedDate) - new Date(b.postedDate));
+    }
 
-      setLoading (false);
-    },
-    [selectedCategory, searchQuery, jobs]
-  );
+    setFilteredJobs(tempJobs);
+  }, [jobs, selectedCategory, searchQuery, dateFilter]);
 
   
 
@@ -86,7 +89,8 @@ const Home = () => {
           selectedCategory={selectedCategory}
           onFilterChange={setSelectedCategory}
           searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          dateFilter={dateFilter}
+        onDateFilterChange={setDateFilter}
         />
       </motion.div>
 

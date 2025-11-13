@@ -1,5 +1,5 @@
 import React from 'react';
-import {Search} from 'lucide-react';
+import { Search } from 'lucide-react';
 
 const FilterBar = ({
   categories,
@@ -7,27 +7,29 @@ const FilterBar = ({
   onFilterChange,
   searchQuery,
   onSearchChange,
+  dateFilter,
+  onDateFilterChange
 }) => {
   return (
     <div>
       <div className="text-center mb-4 relative pb-1 md:pb-10">
-          <h2 className="text-3xl font-bold inline-block relative">
-            ALL JOBS HERE
-            {/*  line */}
-            <span className="absolute left-1/2 -bottom-2 w-20 h-1 bg-indigo-600 rounded-full -translate-x-1/2"></span>
-          </h2>
-        </div>
-      <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-2xl bg-white">
+        <h2 className="text-3xl font-bold inline-block relative">
+          ALL JOBS HERE
+          <span className="absolute left-1/2 -bottom-2 w-20 h-1 bg-indigo-600 rounded-full -translate-x-1/2"></span>
+        </h2>
+      </div>
+
+      <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-2xl bg-white gap-4">
 
         {/* Category Filter */}
         <div className="flex items-center gap-3">
           <select
             value={selectedCategory}
-            onChange={e => onFilterChange (e.target.value)}
+            onChange={e => onFilterChange(e.target.value)}
             className="select select-bordered w-56 text-gray-800 border-b-blue-300 light:text-white bg-white"
           >
             <option value="">All Categories</option>
-            {categories.map ((cat, index) => (
+            {categories.map((cat, index) => (
               <option key={index} value={cat}>
                 {cat}
               </option>
@@ -35,12 +37,26 @@ const FilterBar = ({
           </select>
         </div>
 
+        {/* Date Filter */}
+        <div className="flex items-center gap-3">
+          <select
+            value={dateFilter}
+            onChange={e => onDateFilterChange(e.target.value)}
+            className="select select-bordered w-56 text-gray-800 border-b-blue-300 light:text-white bg-white"
+          >
+            <option value="">Sort by Date</option>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+
+        {/* Search Input */}
         <div className="flex items-center gap-2 w-full md:w-1/2">
           <div className="relative w-full">
             <input
               type="text"
               value={searchQuery}
-              onChange={e => onSearchChange (e.target.value)}
+              onChange={e => onSearchChange(e.target.value)}
               placeholder="Search jobs by title..."
               className="input input-bordered w-full text-gray-800 border-b-blue-300 light:text-white pr-10 bg-white"
             />

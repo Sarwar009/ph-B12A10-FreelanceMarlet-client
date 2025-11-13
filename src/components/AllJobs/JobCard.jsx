@@ -12,7 +12,7 @@ const JobCard = ({ job, onDelete }) => {
   const navigate = useNavigate();
   const isOwner = user?.email === job?.userEmail;
 
-  const [acceptJob, setAcceptJob] = useState(job); // Initialize with job
+  const [acceptJob, setAcceptJob] = useState(job); // track acceptedBy
 
   const handleAccept = async () => {
     if (!user?.email) return toast.error("Login first to accept this job");
@@ -58,6 +58,7 @@ const JobCard = ({ job, onDelete }) => {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
+
         {isOwner && (
           <div className="absolute top-2 right-3 text-xs flex items-center gap-4 drop-shadow">
             <button
@@ -86,6 +87,7 @@ const JobCard = ({ job, onDelete }) => {
         <p className="text-sm text-gray-500 font-medium mb-2">{job.category}</p>
         <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">{job.summary}</p>
 
+        {/* Action Buttons */}
         <div className="flex gap-4 mt-2">
           <button
             onClick={() => navigate(`/allJobs/${job._id}`)}
@@ -94,11 +96,19 @@ const JobCard = ({ job, onDelete }) => {
             View Details
           </button>
 
-          {acceptJob?.acceptedBy === user?.email ? (
-            <button className="btn bg-gray-400 cursor-not-allowed disabled:">Already Accepted</button>
+          {isOwner ? (
+            <button
+              onClick={() => navigate(`/updateJobs/${job._id}`)}
+              className="btn bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
+            >
+              Update Job
+            </button>
+          ) : acceptJob?.acceptedBy === user?.email ? (
+            <button className="btn bg-gray-400 cursor-not-allowed text-white px-4 py-2 rounded-lg">
+              Already Accepted
+            </button>
           ) : (
             <button
-
               onClick={handleAccept}
               className="btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
             >
@@ -108,6 +118,7 @@ const JobCard = ({ job, onDelete }) => {
         </div>
       </div>
 
+      {/* Hover bar */}
       <div className="absolute bottom-0 left-0 w-0 h-[3px] bg-indigo-600 transition-all duration-500 group-hover:w-full" />
     </motion.div>
   );
