@@ -1,39 +1,54 @@
-import React from 'react';
-import {motion} from 'framer-motion';
-import { useNavigate} from 'react-router';
-import {X} from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
+import { Trash2 } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import axios from "axios";
+import toast from "react-hot-toast";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
-const JobCard = ({job}) => {
+const JobCard = ({ job, onDelete }) => {
+  const { API, user, loading, setAcceptedTasks } = useAuth();
+  const navigate = useNavigate();
+  const isOwner = user?.email === job?.userEmail;
 
-  const { API, setJobs, user} = useAuth ();
-  const isOwner = user?.email === job.userEmail;
+  const [acceptJob, setAcceptJob] = useState(job); // Initialize with job
 
-  const handleDelete = async () => {
-    if (!job._id) return console.error("Job ID is missing!");
+  const handleAccept = async () => {
+    if (!user?.email) return toast.error("Login first to accept this job");
 
     try {
-      const res = await axios.delete(`${API}/deleteJobs/${job._id}`);
-      console.log("Deleted:", res.data);
-      setJobs(prevJobs => prevJobs.filter(j => j._id !== job._id));
-      toast.success('Job Deleted Successfully')
-    } catch (error) {
-      toast.error('Delete Failed')
-      console.error("Delete failed:", error);
+      await axios.patch(`${API}/acceptJob/${job._id}`, { acceptedBy: user.email });
+      setAcceptJob(prev => ({ ...prev, acceptedBy: user.email }));
+      setAcceptedTasks(prev => [...prev, { ...job, acceptedBy: user.email }]);
+      toast.success("Job accepted!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to accept job");
     }
   };
 
-  const navigate = useNavigate ();
+  const handleDelete = async () => {
+    if (!onDelete) return;
+    try {
+      await axios.delete(`${API}/deleteJobs/${job._id}`);
+      onDelete(job._id);
+      toast.success("Job deleted successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Delete failed");
+    }
+  };
+
+  if (loading) return <LoadingSpinner text="Loading..." />;
+
   return (
     <motion.div
       key={job._id}
-      initial={{opacity: 0, y: 50}}
-      whileInView={{opacity: 1, y: 0}}
-      transition={{duration: 0.2}}
-      className="relative bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 
-             hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
+      className="relative bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group"
     >
       {/* Image */}
       <div className="relative h-48 w-full overflow-hidden">
@@ -42,56 +57,57 @@ const JobCard = ({job}) => {
           alt={job.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
-
         <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
-        {
-          isOwner && <div className="absolute top-2 right-3 text-xs flex items-center gap-4 drop-shadow">
-          <button className="group p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer" 
-          onClick={()=> handleDelete()}
-          >
-            <X className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-red-500 transition" />
-          </button>
+        {isOwner && (
+          <div className="absolute top-2 right-3 text-xs flex items-center gap-4 drop-shadow">
+            <button
+              className="group p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+              onClick={handleDelete}
+            >
+              <Trash2 className="w-5 h-5 text-red-600 dark:text-red-300 group-hover:text-red-500 transition" />
+            </button>
+          </div>
+        )}
 
-        </div>
-        }
-        
-
-        {/* PostedBy + Date */}
         <div className="absolute bottom-2 left-3 text-xs text-white flex items-center gap-4 drop-shadow">
-          <p className="bg-indigo-400/70 px-2 py-1 rounded-md">
-            {job.postedBy}
-          </p>
-          <p className="bg-white/30 px-2 py-1 rounded-md backdrop-blur-sm">
-            {job.postedDate}
-          </p>
+          <p className="bg-indigo-400/70 px-2 py-1 rounded-md">{job.postedBy}</p>
+          <p className="bg-white/30 px-2 py-1 rounded-md backdrop-blur-sm">{job.postedDate}</p>
         </div>
       </div>
 
       {/* Job Info */}
       <div className="p-5">
-        <h3 className="text-xl font-semibold text-indigo-700 mb-1 group-hover:text-indigo-800 transition-colors cursor-pointer" 
-      onClick={() => navigate (`/allJobs/${job._id}`)}>
+        <h3
+          className="text-xl font-semibold text-indigo-700 mb-1 group-hover:text-indigo-800 transition-colors cursor-pointer"
+          onClick={() => navigate(`/allJobs/${job._id}`)}
+        >
           {job.title}
         </h3>
+        <p className="text-sm text-gray-500 font-medium mb-2">{job.category}</p>
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">{job.summary}</p>
 
-        <p className="text-sm text-gray-500 font-medium mb-2">
-          {job.category}
-        </p>
-
-        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-          {job.summary}
-        </p>
         <div className="flex gap-4 mt-2">
-              <button onClick={() => navigate (`/allJobs/${job._id}`)} className="btn bg-indigo-600 text-white hover:bg-indigo-700">
-                View Details
-              </button>
-              <button onClick={() => navigate (`/updateJobs/${job._id}`)} className="btn btn-outline border-indigo-600 text-indigo-600 hover:bg-indigo-50">
-                Update Info
-              </button>
-            </div>
+          <button
+            onClick={() => navigate(`/allJobs/${job._id}`)}
+            className="btn bg-indigo-600 text-white hover:bg-indigo-700"
+          >
+            View Details
+          </button>
+
+          {acceptJob?.acceptedBy === user?.email ? (
+            <button className="btn bg-gray-400 cursor-not-allowed disabled:">Already Accepted</button>
+          ) : (
+            <button
+
+              onClick={handleAccept}
+              className="btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+            >
+              Accept Job
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Line */}
       <div className="absolute bottom-0 left-0 w-0 h-[3px] bg-indigo-600 transition-all duration-500 group-hover:w-full" />
     </motion.div>
   );

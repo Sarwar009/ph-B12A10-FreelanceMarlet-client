@@ -29,17 +29,6 @@ const MyAddedJobs = () => {
     fetchJobs();
   }, [API, user?.email]);
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${API}/allJobs/${id}`);
-      setJobs((prev) => prev.filter((j) => j._id !== id)); // instantly remove
-      toast.success("Job deleted!");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to delete job");
-    }
-  };
-
   if (loading) return <LoadingSpinner text="Loading" />;
 
   return (
@@ -67,7 +56,13 @@ const MyAddedJobs = () => {
           className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto"
         >
           {jobs.map((job) => (
-            <JobCard key={job._id} job={job}  />
+            <JobCard
+              key={job._id}
+              job={job}
+              onDelete={(deletedId) =>
+                setJobs((prev) => prev.filter((j) => j._id !== deletedId))
+              }
+            />
           ))}
         </motion.div>
       )}
@@ -76,4 +71,3 @@ const MyAddedJobs = () => {
 };
 
 export default MyAddedJobs;
-

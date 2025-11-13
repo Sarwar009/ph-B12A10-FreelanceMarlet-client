@@ -15,6 +15,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [jobs, setJobs] = useState([]);
+  const [acceptedTasks, setAcceptedTasks] = useState([]);
+
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [jobData, setJobData] = useState({
     title: "",
@@ -33,6 +35,7 @@ export const AuthProvider = ({ children }) => {
   });
 
   const API = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
     const html = document.querySelector("html");
@@ -100,6 +103,8 @@ export const AuthProvider = ({ children }) => {
         loginWithGoogle,
         loading,
         validatePassword,
+        acceptedTasks,
+        setAcceptedTasks
       }}
     >
       {children}

@@ -9,6 +9,7 @@ import { CheckCircle, Pencil, Trash2 } from "lucide-react";
 
 const JobDetails = () => {
   const [job, setJob] = useState(null);
+  const [acceptJob, setAcceptJob] = useState(null);
   const [relatedJobs, setRelatedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { API, user } = useAuth();
@@ -38,6 +39,19 @@ const JobDetails = () => {
     fetchJob();
   }, [id, API]);
 
+  const handleAccept = async () => {
+  if (!user?.email) return toast.error("Login first to accept this job");
+
+  try {
+    await axios.patch(`${API}/my-accepted-tasks/${job._id}`, { email: user.email });
+    toast.success("Job accepted!");
+    setAcceptJob((prev) => ({ ...prev, acceptedBy: user.email }));
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to accept job");
+  }
+};
+
   const handleDelete = async () => {
     if (!job?._id) return console.error("Job ID is missing!");
 
@@ -57,9 +71,7 @@ const JobDetails = () => {
   };
 
   const isOwner = () => {
-  // Return false if either is missing
   if (!user?.email || !job?.userEmail) return false;
-  // Compare emails trimmed & lowercase
   return user.email.trim().toLowerCase() === job.userEmail.trim().toLowerCase();
 };
 
@@ -82,7 +94,6 @@ console.log("Job email:", job?.userEmail);
 
   return (
     <div className="mx-auto p-6 space-y-12 text-gray-700">
-      {/* Hero Section */}
       <div className="relative rounded-sm overflow-hidden shadow-lg">
         <img
           src={job.coverImage}
@@ -110,14 +121,17 @@ console.log("Job email:", job?.userEmail);
         <Trash2 size={16} /> Delete
       </button>
     </>
-  ) : (
-    <button
-      onClick={() => toast.success("Job Accepted! ✅")}
-      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition"
-    >
-      <CheckCircle size={16} /> Accept this job
-    </button>
-  )}
+  ) : acceptJob?.acceptedBy === user?.email ? (
+        <button className="btn bg-gray-400 cursor-not-allowed">Already Accepted</button>
+      ) : (
+        <button
+          onClick={handleAccept}
+          className="btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+        >
+          Accept Job ✅
+        </button>
+      )
+  }
 </div>
       </div>
       <motion.div

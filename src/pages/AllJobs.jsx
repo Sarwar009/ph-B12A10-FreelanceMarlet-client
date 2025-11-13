@@ -59,10 +59,12 @@ const Home = () => {
     [selectedCategory, searchQuery, jobs]
   );
 
+  
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <LoadingSpinner />
+        <LoadingSpinner text='Loading...'/>
       </div>
     );
   }
@@ -89,7 +91,9 @@ const Home = () => {
       </motion.div>
 
       <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6 pt-12">
-        {filteredJobs.map (job => <JobCard key={job._id} job={job} />)}
+        {filteredJobs.map (job => <JobCard key={job._id} job={job} onDelete={(deletedId) =>
+                setJobs((prev) => prev.filter((j) => j._id !== deletedId))
+              }/>)}
       </div>
     </div>
   );
