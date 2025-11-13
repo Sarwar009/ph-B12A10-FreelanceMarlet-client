@@ -38,7 +38,10 @@ export default function Home() {
       const latestSix = sorted.slice(0, 6);
       setRecentJobs(latestSix);
     }
+    
+    setLoading(false)
   }, [jobs]);
+
   if (loading)
     return (
       <div className="p-4 text-center">

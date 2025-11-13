@@ -42,15 +42,14 @@ const Router = createBrowserRouter([
             },
             {
                 path: '/addJob',
-                element: 
-                    <ProtectedRoute><AddJob /></ProtectedRoute>
+                element: <ProtectedRoute><AddJob /></ProtectedRoute>
             },
             {
                 path: '/updateJob/:id',
                 element: <ProtectedRoute><UpdateJobs /></ProtectedRoute>
             },
             {
-                path: '/myAddedJobs',
+                path: '/myPostedJobs',
                 element: <ProtectedRoute><MyAddedJobs /></ProtectedRoute>
             },
             {

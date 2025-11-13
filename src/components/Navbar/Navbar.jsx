@@ -1,9 +1,11 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const Navbar = () => {
   const { toggleTheme, theme, user, logout, loading } = useAuth();
+
 
   const links = (
     <>
@@ -20,12 +22,14 @@ const Navbar = () => {
         <NavLink to="/my-accepted-tasks">My Accepted Tasks</NavLink>
       </li>
       <li>
-        <NavLink to="/myAddedJobs">My Added Jobs</NavLink>
+        <NavLink to="/myPostedJobs">My Posted Jobs</NavLink>
       </li>
     </>
   );
 
-  if (loading) return null;
+  
+  if (!user) return <LoadingSpinner ></LoadingSpinner>;
+
   return (
     <div className="navbar shadow-sm">
       <div className="navbar-start">
