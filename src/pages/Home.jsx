@@ -27,7 +27,7 @@ export default function Home() {
     };
 
     loadJobs();
-  }, []);
+  }, [API, setJobs]);
 
   useEffect(() => {
     if (jobs?.length > 0) {
@@ -38,7 +38,12 @@ export default function Home() {
       setRecentJobs(latestSix);
     }
   }, [jobs]);
-if (loading) return <div className="p-4 text-center"><LoadingSpinner text="Loading..." /></div>;
+  if (loading)
+    return (
+      <div className="p-4 text-center">
+        <LoadingSpinner text="Loading..." />
+      </div>
+    );
 
   return (
     <div className="w-full overflow-hidden">
@@ -66,10 +71,22 @@ if (loading) return <div className="p-4 text-center"><LoadingSpinner text="Loadi
               jobs, find work, and collaborate easily — all in one platform.
             </p>
             <div className="flex gap-4">
-              <button onClick={(e)=> {e.preventDefault(); navigate('/alljobs')}} className="btn bg-indigo-600 text-white hover:bg-indigo-700">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/alljobs");
+                }}
+                className="btn bg-indigo-600 text-white hover:bg-indigo-700"
+              >
                 Explore Jobs
               </button>
-              <button onClick={(e)=> {e.preventDefault(); navigate('/addJob')}} className="btn btn-outline border-indigo-600 text-indigo-600 hover:bg-indigo-50">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/addJob");
+                }}
+                className="btn btn-outline border-indigo-600 text-indigo-600 hover:bg-indigo-50"
+              >
                 Create a Job
               </button>
             </div>
@@ -171,8 +188,13 @@ if (loading) return <div className="p-4 text-center"><LoadingSpinner text="Loadi
             make the job hiring and working process smooth, transparent, and
             rewarding for everyone.
           </p>
-          
-          <button className="btn btn-accent mt-1 md:mt-2" onClick={()=> navigate('/about')} >More Details...</button>
+
+          <button
+            className="btn btn-accent mt-1 md:mt-2"
+            onClick={() => navigate("/about")}
+          >
+            More Details...
+          </button>
         </motion.div>
       </div>
     </div>

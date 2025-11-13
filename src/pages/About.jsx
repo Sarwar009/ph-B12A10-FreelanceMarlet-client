@@ -1,12 +1,11 @@
-
 import React from "react";
-// import teamImg from "../../assets/team.jpg"; // replace with your real image
-
 import { HandshakeIcon, LightbulbIcon, Rocket, User2 } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const About = () => {
+  const navigate = useNavigate();
   return (
-    <div className="w-full  ">
+    <div className="w-full">
       
       <div className="py-20 px-5 md:px-20 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-indigo-600 dark:text-indigo-400 animate-fadeIn">
@@ -77,7 +76,7 @@ const About = () => {
         <p className="mb-6 text-lg md:text-xl">
           Whether you are a client or freelancer, start your journey with us today!
         </p>
-        <button className="bg-white text-indigo-600 font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition">
+        <button className="bg-white text-indigo-600 font-semibold cursor-pointer px-8 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition" onClick={() => navigate('/contact')}>
           Get Started
         </button>
       </div>

@@ -38,7 +38,7 @@ const Router = createBrowserRouter([
             },
             {
                 path: '/allJobs/:id',
-                element: <JobDetails />
+                element: <ProtectedRoute><JobDetails /></ProtectedRoute>
             },
             {
                 path: '/addJob',
@@ -54,7 +54,7 @@ const Router = createBrowserRouter([
                 element: <ProtectedRoute><MyAddedJobs /></ProtectedRoute>
             },
             {
-                path: '/my-accpted-tasks',
+                path: '/my-accepted-tasks',
                 element: <ProtectedRoute><MyAcceptedJobs /></ProtectedRoute>
             }
         ]
