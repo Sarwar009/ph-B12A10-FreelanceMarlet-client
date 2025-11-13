@@ -120,7 +120,8 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
         <div>
             <label className="font-semibold text-gray-700">Add Skills:</label>
           <div className="flex gap-2 mt-2 flex-wrap">
-            {jobData.skills.map ((skill, i) => (
+            {Array.isArray(jobData.skills) && 
+            jobData.skills.map ((skill, i) => (
               <span
                 key={i}
                 className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm"
