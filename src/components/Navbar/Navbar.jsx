@@ -6,7 +6,6 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 const Navbar = () => {
   const { toggleTheme, theme, user, logout, loading } = useAuth();
 
-
   const links = (
     <>
       <li>
@@ -27,8 +26,7 @@ const Navbar = () => {
     </>
   );
 
-  
-  if (loading) return <LoadingSpinner ></LoadingSpinner>;
+  if (loading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="navbar shadow-sm">
@@ -53,33 +51,33 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-black rounded-box mt-3 w-52 p-2 shadow z-10"
+            className="menu menu-sm dropdown-content text-white bg-black rounded-box mt-3 w-52 p-2 shadow z-100"
           >
             {links}
             {user ? (
-          <div className="items-center gap-3 flex flex-col">
-            
-            <button onClick={logout} className="btn btn-sm flex">
-              Log Out
-            </button>
-          </div>
-        ) : (
-          <div className="flex gap-3">
-            <Link to="/login" className="btn btn-sm">
-              Login
-            </Link>
-            <Link to="/register" className="btn btn-sm">
-              Register
-            </Link>
-          </div>
-        )}
+              <div className="items-center gap-3 flex flex-col">
+                <button onClick={logout} className="btn btn-sm flex">
+                  Log Out
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-3">
+                <Link to="/login" className="btn btn-sm">
+                  Login
+                </Link>
+                <Link to="/register" className="btn btn-sm">
+                  Register
+                </Link>
+              </div>
+            )}
           </ul>
         </div>
-        <Link to='/' className="btn btn-ghost text-xl header">Freelance Market</Link>
+        <Link to="/" className="btn btn-ghost text-xl header">
+          Freelance Market
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
-        
       </div>
 
       <div className="flex flex-row navbar-end">
