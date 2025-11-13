@@ -28,7 +28,7 @@ const Navbar = () => {
   );
 
   
-  if (!user) return <LoadingSpinner ></LoadingSpinner>;
+  if (!user && loading) return <LoadingSpinner ></LoadingSpinner>;
 
   return (
     <div className="navbar shadow-sm">
