@@ -47,7 +47,7 @@ const UpdateJob = () => {
     };
 
     try {
-      await axios.patch(`${API}/updateJobs/${id}`, updatedJob);
+      await axios.patch(`${API}/updateJob/${id}`, updatedJob);
       toast.success("Job updated successfully!");
       navigate("/allJobs");
     } catch (err) {
