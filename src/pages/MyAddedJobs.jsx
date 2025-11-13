@@ -32,7 +32,7 @@ const MyAddedJobs = () => {
   if (loading) return <LoadingSpinner text="Loading" />;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4">
+    <div className="min-h-screen py-10 px-4">
       <motion.h2
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}

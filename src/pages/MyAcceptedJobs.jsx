@@ -50,12 +50,9 @@ const MyAcceptedJobs = () => {
     }
   };
 
-  const handleTitleClick = async (id) => {
-    try {
-      await axios.patch(`${API}/acceptJob/${id}`);
-    } catch (err) {
-      console.error(err);
-    }}
+  const handleTitleClick = (id) => {
+    navigate(`/allJobs/${id}`);
+  };
 
   return (
     <div className="min-h-screen p-6">
@@ -91,7 +88,7 @@ const MyAcceptedJobs = () => {
               >
                 {/* Task Info */}
                 <div>
-                  <h2 className="text-xl font-semibold text-indigo-700 dark:text-indigo-400 mb-2" onClick={handleTitleClick(id)}>
+                  <h2 className="text-xl font-semibold text-indigo-700 cursor-pointer dark:text-indigo-400 mb-2" onClick={() => handleTitleClick(task._id)}>
                     {task.title}
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-4">

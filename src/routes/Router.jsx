@@ -13,6 +13,7 @@ import UpdateJobs from "../pages/UpdateJobs";
 import ProtectedRoute from "./ProtectedRoute";
 import MyAddedJobs from "../pages/MyAddedJobs";
 import MyAcceptedJobs from "../pages/MyAcceptedJobs";
+import About from "../pages/About";
 
 const Router = createBrowserRouter([
     
@@ -22,6 +23,10 @@ const Router = createBrowserRouter([
             {
                 path: '/',
                 element: <Home />
+            },
+            {
+                path: '/about',
+                element: <About />
             },
             {
                 path: '/allJobs',

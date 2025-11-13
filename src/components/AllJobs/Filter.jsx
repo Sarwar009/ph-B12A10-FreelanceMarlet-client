@@ -17,7 +17,7 @@ const FilterBar = ({
             <span className="absolute left-1/2 -bottom-2 w-20 h-1 bg-indigo-600 rounded-full -translate-x-1/2"></span>
           </h2>
         </div>
-      <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-2xl">
+      <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-2xl bg-white">
 
         {/* Category Filter */}
         <div className="flex items-center gap-3">
