@@ -1,19 +1,19 @@
 FreelanceMarket‑Client
 
-Live Site: 
+Live Site: https://freelancemarket.netlify.app/
 
 Features:
 
 Marketplace interface for freelancers and clients to connect and manage projects
 
-User authentication & role‑based access (freelancer vs. client)
+User authentication & role‑based access 
 
-Project creation, bidding or proposal submission, and tracking workflow
+loggedin use can create, update, read, delete 
 
-Responsive UI built with React + Tailwind (mobile & desktop friendly)
+Responsive UI built with React + Tailwind (Responsive)
 
-Dashboard views: freelancers see bids/offers, clients see proposals & hire status
+client can post there requirements and freelancer can accept that work and complete it
 
-Real‑time updates / notifications (if implemented)
+Real‑time updates 
 
-Secure payment integration or escrow flow (if implemented)
+user can create post and also user will accept others job post  
