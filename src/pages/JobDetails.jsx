@@ -5,11 +5,11 @@ import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
-import { CheckCircle, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 const JobDetails = () => {
   const [job, setJob] = useState(null);
-  const [acceptJob, setAcceptJob] = useState(null);
+  // const [acceptJob, setAcceptJob] = useState(job);
   const [relatedJobs, setRelatedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { API, user } = useAuth();
@@ -43,9 +43,10 @@ const JobDetails = () => {
   if (!user?.email) return toast.error("Login first to accept this job");
 
   try {
-    await axios.patch(`${API}/my-accepted-tasks/${job._id}`, { email: user.email });
+    await axios.patch(`${API}/my-accepted-tasks/${job._id}`, { acceptedBy: user.email });
     toast.success("Job accepted!");
-    setAcceptJob((prev) => ({ ...prev, acceptedBy: user.email }));
+    // setAcceptJob((prev) => ({ ...prev, acceptedBy: user.email }));
+    setJob((prev) => ({ ...prev, acceptedBy: user.email }));
   } catch (err) {
     console.error(err);
     toast.error("Failed to accept job");
@@ -56,7 +57,7 @@ const JobDetails = () => {
     if (!job?._id) return console.error("Job ID is missing!");
 
     try {
-      const res = await axios.delete(`${API}/deleteJobs/${job._id}`);
+      const res = await axios.delete(`${API}/deleteJob/${job._id}`);
       console.log("Deleted:", res.data);
 
       if (res.data.deletedCount > 0) {
@@ -109,7 +110,7 @@ console.log("Job email:", job?.userEmail);
   {isOwner() ? (
     <>
       <Link
-        to={`/updateJobs/${job._id}`}
+        to={`/updateJob/${job._id}`}
         className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition"
       >
         <Pencil size={16} /> Update
@@ -121,14 +122,14 @@ console.log("Job email:", job?.userEmail);
         <Trash2 size={16} /> Delete
       </button>
     </>
-  ) : acceptJob?.acceptedBy === user?.email ? (
+  ) : job?.acceptedBy === user?.email ? (
         <button className="btn bg-gray-400 cursor-not-allowed">Already Accepted</button>
       ) : (
         <button
           onClick={handleAccept}
           className="btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
         >
-          Accept Job ✅
+          Accept Job
         </button>
       )
   }

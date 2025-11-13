@@ -25,11 +25,11 @@ const MyAcceptedJobs = () => {
       }
     };
     fetchTasks();
-  }, [API, user?.email]);
+  }, [API, user?.email, setAcceptedTasks]);
 
   const handleDone = async (taskId) => {
     try {
-      await axios.patch(`${API}/acceptJob/${taskId}`, { acceptedBy: null });
+      await axios.patch(`${API}/my-accepted-tasks/${taskId}`, { acceptedBy: null });
       setTasks(prev => prev.filter(t => t._id !== taskId));
       setAcceptedTasks(prev => prev.filter(t => t._id !== taskId));
       toast.success("Task Successfully Completed");
@@ -40,7 +40,7 @@ const MyAcceptedJobs = () => {
   };
   const handleCancel = async (taskId) => {
     try {
-      await axios.patch(`${API}/acceptJob/${taskId}`, { acceptedBy: null });
+      await axios.patch(`${API}/my-accepted-tasks/${taskId}`, { acceptedBy: null });
       setTasks(prev => prev.filter(t => t._id !== taskId));
       setAcceptedTasks(prev => prev.filter(t => t._id !== taskId));
       toast.success("Task Canceled");

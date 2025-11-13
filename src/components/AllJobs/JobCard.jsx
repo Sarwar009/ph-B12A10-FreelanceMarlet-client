@@ -18,7 +18,7 @@ const JobCard = ({ job, onDelete }) => {
     if (!user?.email) return toast.error("Login first to accept this job");
 
     try {
-      await axios.patch(`${API}/acceptJob/${job._id}`, { acceptedBy: user.email });
+      await axios.patch(`${API}/my-accepted-tasks/${job._id}`, { acceptedBy: user.email });
       setAcceptJob(prev => ({ ...prev, acceptedBy: user.email }));
       setAcceptedTasks(prev => [...prev, { ...job, acceptedBy: user.email }]);
       toast.success("Job accepted!");
@@ -31,7 +31,7 @@ const JobCard = ({ job, onDelete }) => {
   const handleDelete = async () => {
     if (!onDelete) return;
     try {
-      await axios.delete(`${API}/deleteJobs/${job._id}`);
+      await axios.delete(`${API}/deleteJob/${job._id}`);
       onDelete(job._id);
       toast.success("Job deleted successfully");
     } catch (error) {
@@ -98,7 +98,7 @@ const JobCard = ({ job, onDelete }) => {
 
           {isOwner ? (
             <button
-              onClick={() => navigate(`/updateJobs/${job._id}`)}
+              onClick={() => navigate(`/updateJob/${job._id}`)}
               className="btn bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
             >
               Update Job

@@ -28,13 +28,13 @@ const Home = () => {
         setCategories (cats);
       } catch (err) {
         console.error ('Error fetching jobs:', err);
-      } finally {
-        
-    setLoading (false);
       }
     };
 
     loadJobs ();
+    
+        
+    setLoading (false);
   }, [setJobs, API]);
 
    useEffect(() => {

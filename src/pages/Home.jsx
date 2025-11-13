@@ -9,7 +9,7 @@ import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import Button from "daisyui/components/button";
 
 export default function Home() {
-  const { jobs, setJobs, API, loading } = useAuth();
+  const { jobs, setJobs, API, loading, setLoading } = useAuth();
   const [recentJobs, setRecentJobs] = useState([]);
 
   const navigate = useNavigate();
@@ -27,7 +27,8 @@ export default function Home() {
     };
 
     loadJobs();
-  }, [API, setJobs]);
+    setLoading(false)
+  }, [API, setJobs, setLoading]);
 
   useEffect(() => {
     if (jobs?.length > 0) {

@@ -11,13 +11,20 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
 
   useEffect (() => {
     axios.get (`${API}/allJobs`).then (res => setJobs (res.data));
-  }, []);
+  }, [API, setJobs]);
 
   useEffect(() => {
     if (user?.email) {
       setJobData(prev => ({ ...prev, userEmail: user.email }));
     }
   }, [user, setJobData]);
+
+  useEffect(() => {
+  if (user?.displayName) {
+    setJobData(prev => ({ ...prev, postedBy: user.displayName }));
+  }
+}, [user, setJobData]);
+  
 
   const handleAddSkill = () => {
     if (skillInput && !jobData.skills.includes (skillInput)) {
@@ -54,10 +61,10 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
           <label className="font-semibold text-gray-700">Posted By:</label>
           <input
             type="text"
-            placeholder="Posted By"
+            placeholder="Posted by"
             className="input input-field shadow-sm p-2 bg-white"
-            value={jobData.postedBy}
-            onChange={e => setJobData ({...jobData, postedBy: e.target.value})}
+            value={jobData.postedBy || ''}
+            
             required
           />
         </div>
@@ -72,7 +79,7 @@ const JobForm = ({jobData, setJobData, handleSubmit}) => {
             placeholder="User Email"
             className="input input-field shadow-sm p-2 bg-white"
             value={jobData.userEmail || ''}
-            readOnly
+            
             required
           />
         </div>
