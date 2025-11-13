@@ -56,6 +56,23 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-black rounded-box mt-3 w-52 p-2 shadow z-10"
           >
             {links}
+            {user ? (
+          <div className="items-center gap-3 flex flex-col">
+            
+            <button onClick={logout} className="btn btn-sm flex">
+              Log Out
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-3">
+            <Link to="/login" className="btn btn-sm">
+              Login
+            </Link>
+            <Link to="/register" className="btn btn-sm">
+              Register
+            </Link>
+          </div>
+        )}
           </ul>
         </div>
         <Link to='/' className="btn btn-ghost text-xl header">Freelance Market</Link>
@@ -78,7 +95,7 @@ const Navbar = () => {
             </button>
           </div>
         ) : (
-          <div className="flex gap-3">
+          <div className="gap-3 hidden md:flex">
             <Link to="/login" className="btn btn-sm">
               Login
             </Link>
