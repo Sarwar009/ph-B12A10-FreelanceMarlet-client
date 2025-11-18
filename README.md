@@ -23,9 +23,8 @@ A full-stack freelancing marketplace where users can explore jobs, post tasks, a
 - MongoDB
 - Express.js
 - Node.js
-- JWT Authentication
+- Firebase Authentication
 - Axios
-- TanStack Query (optional if used)
 
 ---
 
@@ -49,7 +48,6 @@ A full-stack freelancing marketplace where users can explore jobs, post tasks, a
 "react-icons": "^5.x",
 "tailwindcss": "^3.x",
 "express": "^4.x",
-"jsonwebtoken": "^9.x",
 "mongodb": "^6.x"
 ```
 
