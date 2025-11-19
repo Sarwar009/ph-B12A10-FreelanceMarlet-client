@@ -59,17 +59,22 @@ A full-stack freelancing marketplace where users can explore jobs, post tasks, a
 git clone https://github.com/Sarwar009/ph-B12A10-FreelanceMarlet-client
 ```
 
-2. Install dependencies:
+2. Go to inside the folder:
+```sh
+cd ph-B12A10-FreelanceMarlet-client
+```
+
+3. Install dependencies:
 ```sh
 npm install
 ```
 
-3. Create `.env` file:
+4. Create `.env` file:
 ```
 VITE_API_URL=your_api_url
 ```
 
-4. Run:
+5. Run:
 ```sh
 npm run dev
 ```
