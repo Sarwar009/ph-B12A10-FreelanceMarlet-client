@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {motion} from 'framer-motion';
 import {Link, useLocation, useNavigate} from 'react-router';
 import toast from 'react-hot-toast';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthProvider';
 
 export default function Login () {
   const { login, loginWithGoogle } = useAuth();

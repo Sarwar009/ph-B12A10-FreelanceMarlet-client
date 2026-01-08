@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { categories } from "../Data/Data";
-import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import JobCard from "../components/AllJobs/JobCard";
 import { useNavigate } from "react-router";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
-import Button from "daisyui/components/button";
+import { useAuth } from "../contexts/AuthProvider";
 
 export default function Home() {
   const { jobs, setJobs, API, loading, setLoading } = useAuth();
@@ -87,7 +86,7 @@ export default function Home() {
               <button
                 onClick={(e) => {
                   e.preventDefault();
-                  navigate("/addJob");
+                  navigate("/dashboard/add-job");
                 }}
                 className="btn btn-outline border-indigo-600 text-indigo-600 hover:bg-indigo-50"
               >

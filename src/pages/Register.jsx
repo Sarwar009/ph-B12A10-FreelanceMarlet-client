@@ -1,200 +1,157 @@
-import React, {useState} from 'react';
-import {motion} from 'framer-motion';
-import {Link, useLocation, useNavigate} from 'react-router';
-import {Eye, EyeOff} from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Link, useLocation, useNavigate } from "react-router";
+import { Eye, EyeOff } from "lucide-react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useAuth } from "../contexts/AuthProvider";
 
-export default function Register () {
-  const [showPass, setShowPass] = useState (false);
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+export default function Register() {
+  const [showPass, setShowPass] = useState(false);
+
   const { register, validatePassword, loginWithGoogle } = useAuth();
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoUrl, setPhotoUrl] = useState("");
 
-  const location = useLocation()
-  const from = location.state?.from?.pathname || "/";
-
+  /* ================= GOOGLE LOGIN ================= */
   const handleGoogleLogin = async () => {
     try {
-      await loginWithGoogle();
+      const res = await loginWithGoogle();
       toast.success("Google login successful!");
-       navigate(from, { replace: true });
+
+      await upsertUser(res.user);
+      navigate(from, { replace: true });
     } catch (err) {
       toast.error(err.message);
     }
   };
 
+  /* ================= REGISTER ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const errors = validatePassword(password);
     if (errors.length > 0) {
-      errors.forEach(err => toast.error(err));
+      errors.forEach((err) => toast.error(err));
       return;
     }
 
     try {
-      await register(name, email, password);
+      const createdUser = await register(name, email, password, photoUrl);
       toast.success("Account created successfully!");
-      navigate(from, {replace: true});
+
+      await upsertUser(createdUser);
+      navigate(from, { replace: true });
     } catch (err) {
       toast.error(err.message);
+    }
+  };
+
+  /* ================= BACKEND USER SAVE ================= */
+  const upsertUser = async (user) => {
+    try {
+      await axios.post(`${API}/users`, {
+        email: user.email,
+        name: user.displayName || name,
+        photoURL: user.photoURL || photoUrl,
+      });
+    } catch (err) {
+      console.error("User upsert failed", err);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-300 via-purple-200 to-pink-200 px-4">
       <motion.div
-        initial={{opacity: 0, y: 60}}
-        animate={{opacity: 1, y: 0}}
-        transition={{duration: 1}}
+        initial={{ opacity: 0, y: 60 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
         className="bg-white rounded-2xl shadow-2xl p-10 w-full max-w-md"
       >
         <motion.h2
-          initial={{opacity: 0, y: -30}}
-          animate={{opacity: 1, y: 0}}
-          transition={{duration: 0.8, delay: 0.3}}
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           className="text-3xl font-bold text-center text-gray-800 mb-6"
         >
           Create an Account
         </motion.h2>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
-          <motion.div whileFocus={{scale: 1.03}}>
-            <label className="label">
-              <span className="label-text font-semibold text-gray-500">
-                Full Name
-              </span>
-            </label>
-            <input
-            value={name} onChange={e => setName(e.target.value)}
-              type="text"
-              placeholder="Your full name"
-              className="input input-bordered w-full bg-indigo-50 text-gray-800 placeholder-gray-500 focus:bg-white focus:border-indigo-500 focus:ring focus:ring-indigo-200"
-              required
-            />
-          </motion.div>
+          {/* Name */}
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your full name"
+            className="input input-bordered w-full bg-indigo-50"
+            required
+          />
 
           {/* Email */}
-          <motion.div whileFocus={{scale: 1.03}}>
-            <label className="label">
-              <span className="label-text font-semibold text-gray-500">
-                Email
-              </span>
-            </label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="you@example.com"
+            className="input input-bordered w-full bg-indigo-50"
+            required
+          />
+
+          {/* Photo */}
+          <input
+            value={photoUrl}
+            onChange={(e) => setPhotoUrl(e.target.value)}
+            placeholder="Photo URL"
+            className="input input-bordered w-full bg-indigo-50"
+          />
+
+          {/* Password */}
+          <div className="relative">
             <input
-            value={email} onChange={e => setEmail(e.target.value)}
-              type="email"
-              placeholder="you@example.com"
-              className="input input-bordered w-full bg-indigo-50 text-gray-800 placeholder-gray-500 focus:bg-white focus:border-indigo-500 focus:ring focus:ring-indigo-200"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type={showPass ? "text" : "password"}
+              placeholder="Create a strong password"
+              className="input input-bordered w-full bg-indigo-50 pr-10"
               required
             />
-          </motion.div>
-
-          <motion.div whileFocus={{scale: 1.03}}>
-            <label className="label">
-              <span className="label-text font-semibold text-gray-500">
-                Photo URL
-              </span>
-            </label>
-            <input
-            value={photoUrl} onChange={e => setPhotoUrl(e.target.value)}
-              placeholder="photo url"
-              className="input input-bordered w-full bg-indigo-50 text-gray-800 placeholder-gray-500 focus:bg-white focus:border-indigo-500 focus:ring focus:ring-indigo-200"
-              required
-            />
-          </motion.div>
-
-          <div className="form-control w-full relative">
-            <label className="label">
-              <span className="label-text font-semibold text-gray-500">
-                Password
-              </span>
-            </label>
-
-            <div className="relative">
-              <input
-              value={password} onChange={e => setPassword(e.target.value)}
-                type={showPass ? 'text' : 'password'}
-                placeholder="Create a strong password"
-                className="input input-bordered w-full bg-indigo-50 text-gray-800 placeholder-gray-500 focus:bg-white focus:border-indigo-500 focus:ring focus:ring-indigo-200 pr-10 relative z-10"
-                required
-              />
-
-              <motion.button
-                type="button"
-                onClick={() => setShowPass (!showPass)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-600 transition-colors z-20"
-                whileTap={{scale: 0.9}}
-              >
-                {showPass ? <EyeOff size={20} /> : <Eye size={20} />}
-              </motion.button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowPass(!showPass)}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              {showPass ? <EyeOff /> : <Eye />}
+            </button>
           </div>
 
-          {/* Submit Button */}
-          <motion.button
-            whileHover={{scale: 1.05}}
-            whileTap={{scale: 0.95}}
-            className="btn btn-primary w-full mt-4 bg-indigo-600 text-white border-none hover:bg-indigo-700"
-          >
+          <button className="btn btn-primary w-full">
             Register
-          </motion.button>
+          </button>
         </form>
 
-        <motion.button
-        onClick={handleGoogleLogin}
-          whileFocus={{scale: 1.05}}
-          whileTap={{scale: 0.95}}
-          className="btn bg-white text-black border-[#e5e5e5] btn-outline btn-secondary w-full "
+        {/* Google */}
+        <button
+          onClick={handleGoogleLogin}
+          className="btn btn-outline w-full mt-4"
         >
-          <svg
-            aria-label="Google logo"
-            width="16"
-            height="16"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <g>
-              <path d="m0 0H512V512H0" fill="#fff" />
-              <path
-                fill="#34a853"
-                d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
-              />
-              <path
-                fill="#4285f4"
-                d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
-              />
-              <path
-                fill="#fbbc02"
-                d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
-              />
-              <path
-                fill="#ea4335"
-                d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
-              />
-            </g>
-          </svg>
-          SignUp With Google
-        </motion.button>
+          Sign up with Google
+        </button>
 
-        <motion.p
-          initial={{opacity: 0}}
-          animate={{opacity: 1}}
-          transition={{delay: 1}}
-          className="text-center text-gray-600 text-sm mt-6"
-        >
-          Already have an account?{' '}
-          <Link
-            to="/login"
-            className="text-indigo-600 font-semibold hover:underline"
-          >
+        <p className="text-center mt-4 text-sm">
+          Already have an account?{" "}
+          <Link to="/login" className="text-indigo-600 font-semibold">
             Login
           </Link>
-        </motion.p>
+        </p>
       </motion.div>
     </div>
   );

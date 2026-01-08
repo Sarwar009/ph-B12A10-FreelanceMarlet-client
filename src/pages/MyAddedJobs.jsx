@@ -1,14 +1,15 @@
 // src/components/MyJobs/MyAddedJobs.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import { useAuth } from "../contexts/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import JobCard from "../components/AllJobs/JobCard";
+import { useAuth } from "../contexts/AuthProvider";
+import useApi from "../hooks/useApi";
 
 const MyAddedJobs = () => {
   const { user, API } = useAuth();
+  const api = useApi();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,9 +17,8 @@ const MyAddedJobs = () => {
     if (!user?.email) return;
     const fetchJobs = async () => {
       try {
-        const res = await axios.get(`${API}/allJobs`);
-        const userJobs = res.data.filter((job) => job.userEmail === user.email);
-        setJobs(userJobs);
+        const res = await api.get("/myAddedJobs", { params: { email: user.email } });
+        setJobs(res.data);
       } catch (err) {
         console.error(err);
         toast.error("Failed to fetch your jobs!");
@@ -28,6 +28,16 @@ const MyAddedJobs = () => {
     };
     fetchJobs();
   }, [API, user?.email]);
+
+  const onDelete = async (id) => {
+    try {
+      await api.delete(`/deleteJob/${id}`);
+      setJobs((prev) => prev.filter((job) => job._id !== id));
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete the job!");
+    }
+  };
 
   if (loading) return <LoadingSpinner text="Loading" />;
 
@@ -59,9 +69,7 @@ const MyAddedJobs = () => {
             <JobCard
               key={job._id}
               job={job}
-              onDelete={(deletedId) =>
-                setJobs((prev) => prev.filter((j) => j._id !== deletedId))
-              }
+              onDelete={onDelete}
             />
           ))}
         </motion.div>

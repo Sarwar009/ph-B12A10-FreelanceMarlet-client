@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useAuth } from "../contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Trash, X } from "lucide-react";
+import { Check, Trash } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import { useAuth } from "../contexts/AuthProvider";
+import useApi from "../hooks/useApi";
+import axios from "axios";
 
 const MyAcceptedJobs = () => {
-  const { user, API, setAcceptedTasks } = useAuth();
+  const { API, user, setAcceptedTasks, accessToken } = useAuth();
+  const api = useApi();
   const [tasks, setTasks] = useState([]);
 
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const MyAcceptedJobs = () => {
     if (!user?.email) return;
     const fetchTasks = async () => {
       try {
-        const res = await axios.get(`${API}/my-accepted-tasks`, { params: { email: user.email } });
+        const res = await api.get(`${API}/my-accepted-tasks`, { params: { email: user.email } }, );
         setTasks(res.data);
         setAcceptedTasks(res.data);
       } catch (err) {
@@ -25,11 +27,13 @@ const MyAcceptedJobs = () => {
       }
     };
     fetchTasks();
-  }, [API, user?.email, setAcceptedTasks]);
+  }, [api, user?.email, setAcceptedTasks]);
 
   const handleDone = async (taskId) => {
     try {
-      await axios.patch(`${API}/my-accepted-tasks/${taskId}`, { acceptedBy: null });
+      await axios.patch(`${API}/my-accepted-tasks/${taskId}`, { acceptedBy: null }, {
+  headers: { Authorization: `Bearer ${accessToken}` }
+});
       setTasks(prev => prev.filter(t => t._id !== taskId));
       setAcceptedTasks(prev => prev.filter(t => t._id !== taskId));
       toast.success("Task Successfully Completed");
@@ -40,7 +44,7 @@ const MyAcceptedJobs = () => {
   };
   const handleCancel = async (taskId) => {
     try {
-      await axios.patch(`${API}/my-accepted-tasks/${taskId}`, { acceptedBy: null });
+      await api.patch(`/my-accepted-tasks/${taskId}`, { acceptedBy: null });
       setTasks(prev => prev.filter(t => t._id !== taskId));
       setAcceptedTasks(prev => prev.filter(t => t._id !== taskId));
       toast.success("Task Canceled");

@@ -4,4 +4,5 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-export default AuthContext;
+// Keep simple re-export (no duplicate named exports)
+export { default } from "./AuthProvider.jsx";

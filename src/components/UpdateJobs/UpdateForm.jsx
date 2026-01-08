@@ -5,16 +5,18 @@ import TextareaField from "./TextareaField";
 import AnimatedBtn from "./AnimatedBtn";
 
 const UpdateForm = ({ jobData, setJobData, onSubmit }) => {
+  // Update local state when user types
   const handleChange = (e) => {
     const { name, value } = e.target;
     setJobData((prev) => ({ ...prev, [name]: value }));
   };
+console.log(jobData);
 
   return (
     <motion.form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit();
+        onSubmit(); // call the parent submit handler which handles API request
       }}
       className="w-full max-w-3xl bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700"
       initial={{ y: 50, opacity: 0 }}
@@ -24,8 +26,8 @@ const UpdateForm = ({ jobData, setJobData, onSubmit }) => {
       <h2 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 text-center mb-8">
         Update Your Job Post
       </h2>
-      
 
+      {/* Grid for small input fields */}
       <div className="grid md:grid-cols-2 gap-6">
         <InputField label="Job Title" name="title" value={jobData.title} onChange={handleChange} />
         <InputField label="Posted By" name="postedBy" value={jobData.postedBy} onChange={handleChange} />
@@ -38,16 +40,31 @@ const UpdateForm = ({ jobData, setJobData, onSubmit }) => {
         <InputField label="Salary Range" name="salaryRange" value={jobData.salaryRange} onChange={handleChange} />
       </div>
 
+      {/* Skills & Requirements */}
       <div className="mt-6 grid md:grid-cols-2 gap-6">
-        <TextareaField label="Skills (comma separated)" name="skills" value={jobData.skills} onChange={handleChange} />
-        <TextareaField label="Requirements (comma separated)" name="requirements" value={jobData.requirements} onChange={handleChange} />
+        <TextareaField
+          label="Skills (comma separated)"
+          name="skills"
+          value={jobData.skills}
+          onChange={handleChange}
+        />
+        <TextareaField
+          label="Requirements (comma separated)"
+          name="requirements"
+          value={jobData.requirements}
+          onChange={handleChange}
+        />
       </div>
 
+      {/* Summary */}
       <div className="mt-6">
         <TextareaField label="Summary" name="summary" value={jobData.summary} onChange={handleChange} />
       </div>
 
-      <AnimatedBtn text="Update Job" />
+      {/* Submit button */}
+      <div className="mt-6 text-center">
+        <AnimatedBtn text="Update Job" />
+      </div>
     </motion.form>
   );
 };

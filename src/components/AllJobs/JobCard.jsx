@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { Trash2 } from "lucide-react";
-import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { useAuth } from "../../contexts/AuthProvider";
 
-const JobCard = ({ job, onDelete }) => {
-  const { API, user, loading, setAcceptedTasks } = useAuth();
+const JobCard = ({ job, onDelete, loading }) => {
+  const { API, user, setAcceptedTasks, accessToken } = useAuth();
   const navigate = useNavigate();
   const isOwner = user?.email === job?.userEmail;
 
@@ -18,7 +18,11 @@ const JobCard = ({ job, onDelete }) => {
     if (!user?.email) return toast.error("Login first to accept this job");
 
     try {
-      await axios.patch(`${API}/my-accepted-tasks/${job._id}`, { acceptedBy: user.email });
+      await axios.patch(`${API}/my-accepted-tasks/${job._id}`, { acceptedBy: user.email }, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // <-- এইটা দরকার
+        },
+      });
       setAcceptJob(prev => ({ ...prev, acceptedBy: user.email }));
       setAcceptedTasks(prev => [...prev, { ...job, acceptedBy: user.email }]);
       toast.success("Job accepted!");
@@ -40,7 +44,9 @@ const JobCard = ({ job, onDelete }) => {
     }
   };
 
-  if (loading) return <LoadingSpinner text="Loading..." />;
+  if (loading) return <LoadingSpinner />;
+  console.log(job);
+  
 
   return (
     <motion.div
@@ -89,16 +95,16 @@ const JobCard = ({ job, onDelete }) => {
 
         {/* Action Buttons */}
         <div className="flex gap-4 mt-2">
-          <button
-            onClick={() => navigate(`/allJobs/${job._id}`)}
+          <Link
+            to={`/allJobs/${job._id}`}
             className="btn bg-indigo-600 text-white hover:bg-indigo-700"
           >
             View Details
-          </button>
+          </Link>
 
           {isOwner ? (
             <button
-              onClick={() => navigate(`/updateJob/${job._id}`)}
+              onClick={() => navigate(`/dashboard/update-job/${job._id}`)}
               className="btn bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
             >
               Update Job

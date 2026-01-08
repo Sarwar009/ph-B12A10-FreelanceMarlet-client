@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
-import axios from "axios";
+import useApi from "../hooks/useApi";
 import { motion } from "framer-motion";
-import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 import { Pencil, Trash2 } from "lucide-react";
+import { useAuth } from "../contexts/AuthProvider";
 
 const JobDetails = () => {
   const [job, setJob] = useState(null);
@@ -15,14 +15,20 @@ const JobDetails = () => {
   const { API, user } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
+  const api = useApi();
+
+  // console.log('access',user.accessToken);
+  
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const res = await axios.get(`${API}/allJobs/${id}`);
+        const res = await api.get(`/allJobs/${id}`);
         setJob(res.data);
+        console.log(user.accessToken);
+        
 
-        const relatedRes = await axios.get(`${API}/allJobs`);
+        const relatedRes = await api.get(`/allJobs`);
         setRelatedJobs(
           relatedRes.data
             .filter(
@@ -37,13 +43,13 @@ const JobDetails = () => {
       }
     };
     fetchJob();
-  }, [id, API]);
+  }, [id, API, user]);
 
   const handleAccept = async () => {
   if (!user?.email) return toast.error("Login first to accept this job");
 
   try {
-    await axios.patch(`${API}/my-accepted-tasks/${job._id}`, { acceptedBy: user.email });
+    await api.patch(`/my-accepted-tasks/${id}`, { acceptedBy: user.email });
     toast.success("Job accepted!");
     // setAcceptJob((prev) => ({ ...prev, acceptedBy: user.email }));
     setJob((prev) => ({ ...prev, acceptedBy: user.email }));
@@ -57,7 +63,7 @@ const JobDetails = () => {
     if (!job?._id) return console.error("Job ID is missing!");
 
     try {
-      const res = await axios.delete(`${API}/deleteJob/${job._id}`);
+      const res = await api.delete(`/deleteJob/${job._id}`);
       console.log("Deleted:", res.data);
 
       if (res.data.deletedCount > 0) {
@@ -89,7 +95,6 @@ console.log("Job email:", job?.userEmail);
 
   if (!job)
     return <p className="p-8 text-center text-gray-600">Job not found</p>;
-
 
 
 

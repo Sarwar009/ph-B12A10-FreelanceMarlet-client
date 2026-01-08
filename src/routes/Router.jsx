@@ -15,9 +15,12 @@ import MyAddedJobs from "../pages/MyAddedJobs";
 import MyAcceptedJobs from "../pages/MyAcceptedJobs";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
+import Dashboard from "../pages/Dashboard";
+import DashboardLayout from "../components/Dashboard/DashboardLayout";
+import Profile from "../pages/Profile";
 
 const Router = createBrowserRouter([
-    
+
     {
         element: <Layout />,
         children: [
@@ -41,20 +44,34 @@ const Router = createBrowserRouter([
                 element: <ProtectedRoute><JobDetails /></ProtectedRoute>
             },
             {
-                path: '/addJob',
-                element: <ProtectedRoute><AddJob /></ProtectedRoute>
-            },
-            {
-                path: '/updateJob/:id',
-                element: <ProtectedRoute><UpdateJobs /></ProtectedRoute>
-            },
-            {
-                path: '/myPostedJobs',
-                element: <ProtectedRoute><MyAddedJobs /></ProtectedRoute>
-            },
-            {
-                path: '/my-accepted-tasks',
-                element: <ProtectedRoute><MyAcceptedJobs /></ProtectedRoute>
+                path: '/dashboard',
+                element: <ProtectedRoute><DashboardLayout /></ProtectedRoute>,
+                children: [
+                    {
+                        path: '',
+                        element: <Dashboard />
+                    },
+                    {
+                        path: 'profile',
+                        element: <Profile />
+                    },
+                    {
+                        path: 'add-job',
+                        element: <AddJob />
+                    },
+                    {
+                        path: 'my-jobs',
+                        element: <MyAddedJobs />
+                    },
+                    {
+                        path: 'accepted-tasks',
+                        element: <MyAcceptedJobs />
+                    },
+                    {
+                        path: 'update-job/:id',
+                        element: <UpdateJobs />
+                    }
+                ]
             }
         ]
     },

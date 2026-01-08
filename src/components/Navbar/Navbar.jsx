@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
-import { useAuth } from "../../contexts/AuthContext";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { useAuth } from "../../contexts/AuthProvider";
+
 
 const Navbar = () => {
   const { toggleTheme, theme, user, logout, loading } = useAuth();
@@ -9,27 +10,62 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/">Home</NavLink>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive
+              ? "text-primary font-semibold bg-primary/10 rounded-lg"
+              : "hover:text-primary hover:bg-base-200 rounded-lg"
+          }
+        >
+          Home
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/allJobs">All Jobs</NavLink>
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            isActive
+              ? "text-primary font-semibold bg-primary/10 rounded-lg"
+              : "hover:text-primary hover:bg-base-200 rounded-lg"
+          }
+        >
+          About
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/addJob">Add a Job</NavLink>
+        <NavLink
+          to="/allJobs"
+          className={({ isActive }) =>
+            isActive
+              ? "text-primary font-semibold bg-primary/10 rounded-lg"
+              : "hover:text-primary hover:bg-base-200 rounded-lg"
+          }
+        >
+          All Jobs
+        </NavLink>
       </li>
-      <li>
-        <NavLink to="/my-accepted-tasks">My Accepted Tasks</NavLink>
-      </li>
-      <li>
-        <NavLink to="/myPostedJobs">My Posted Jobs</NavLink>
-      </li>
+      {user && (
+        <li>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive
+                ? "text-primary font-semibold bg-primary/10 rounded-lg"
+                : "hover:text-primary hover:bg-base-200 rounded-lg"
+            }
+          >
+            Dashboard
+          </NavLink>
+        </li>
+      )}
     </>
   );
 
   if (loading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
-    <div className="navbar shadow-sm">
+    <div className="navbar bg-base-100 shadow-lg border-b border-base-300">
       <div className="navbar-start">
         <div className="dropdown ">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -51,7 +87,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex="-1"
-            className="menu menu-sm dropdown-content text-white bg-black rounded-box mt-3 w-52 p-2 shadow z-100"
+            className="menu menu-sm dropdown-content bg-base-100 text-base-content rounded-box mt-3 w-52 p-2 shadow z-10"
           >
             {links}
             {user ? (
