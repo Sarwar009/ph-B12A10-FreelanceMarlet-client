@@ -6,9 +6,10 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../contexts/AuthProvider";
 import useApi from "../hooks/useApi";
 import axios from "axios";
+import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 const MyAcceptedJobs = () => {
-  const { API, user, setAcceptedTasks, accessToken } = useAuth();
+  const { API, user, setAcceptedTasks, accessToken, loading } = useAuth();
   const api = useApi();
   const [tasks, setTasks] = useState([]);
 
@@ -57,6 +58,31 @@ const MyAcceptedJobs = () => {
   const handleTitleClick = (id) => {
     navigate(`/allJobs/${id}`);
   };
+  if (tasks.length === 0) {
+    return (
+      <div className="min-h-screen p-6">
+        {/* Page Header */}
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl md:text-4xl font-bold text-center text-indigo-600 dark:text-indigo-400 mb-10"
+        >
+          ✅ My Accepted Tasks
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center text-lg mt-20"
+        >
+          You haven’t accepted any tasks yet.
+        </motion.p>
+      </div>
+    );
+  }
+
+  if (loading) return <LoadingSpinner />;
+  
 
   return (
     <div className="min-h-screen p-6">
@@ -70,15 +96,7 @@ const MyAcceptedJobs = () => {
         ✅ My Accepted Tasks
       </motion.h1>
 
-      {tasks.length === 0 ? (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center text-lg mt-20"
-        >
-          You haven’t accepted any tasks yet.
-        </motion.p>
-      ) : (
+      
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           <AnimatePresence>
             {tasks.map(task => (
@@ -125,7 +143,7 @@ const MyAcceptedJobs = () => {
             ))}
           </AnimatePresence>
         </div>
-      )}
+      }
     </div>
   );
 };

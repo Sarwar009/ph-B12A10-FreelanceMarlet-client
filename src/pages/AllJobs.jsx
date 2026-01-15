@@ -71,6 +71,10 @@ const Home = () => {
     setFilteredJobs(tempJobs);
   }, [jobs, selectedCategory, searchQuery, dateFilter]);
 
+  const handleDeleteJob = (id) => {
+  setJobs(prevJobs => prevJobs.filter(job => job._id !== id));
+};
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -107,9 +111,7 @@ const Home = () => {
             <JobCard
               key={job._id}
               job={job}
-              onDelete={(deletedId) =>
-                setJobs((prev) => prev.filter((j) => j._id !== deletedId))
-              }
+              onDelete={handleDeleteJob}
             />
           ))
         ) : (

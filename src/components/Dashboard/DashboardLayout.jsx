@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Outlet, useNavigate, useLocation } from 'react-router';
+import { Link, Outlet, useNavigate, useLocation, NavLink } from 'react-router';
 import { useAuth } from '../../contexts/AuthProvider';
 
 const DashboardLayout = () => {
@@ -10,12 +10,10 @@ const DashboardLayout = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // close sidebar on route change
     setSidebarOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
-    // close sidebar on escape and cleanup
     function onKey(e) {
       if (e.key === 'Escape') setSidebarOpen(false);
     }
@@ -24,7 +22,7 @@ const DashboardLayout = () => {
   }, []);
 
   useEffect(() => {
-    // close sidebar when resizing to desktop widths and prevent body scroll when open
+    
     function onResize() {
       if (window.innerWidth >= 768) setSidebarOpen(false);
     }
@@ -43,23 +41,20 @@ const DashboardLayout = () => {
   };
 
   const menuItems = [
-    { name: 'Dashboard Home', path: '/dashboard', icon: '🏠' },
+    // { name: 'Dashboard Home', path: '/dashboard', icon: '🏠' },
     { name: 'Profile', path: '/dashboard/profile', icon: '👤' },
-    { name: 'Add Job', path: '/dashboard/add-job', icon: '➕' },
     { name: 'My Jobs', path: '/dashboard/my-jobs', icon: '📋' },
-    { name: 'Accepted Tasks', path: '/dashboard/accepted-tasks', icon: '✅' },
+    { name: 'Add Job', path: '/dashboard/add-job', icon: '➕' },
+    { name: 'Accepted Jobs', path: '/dashboard/accepted-tasks', icon: '✅' },
   ];
 
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Top Navbar */}
       <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              {/* <Link to="/" className="flex items-center mr-4">
-                
-              </Link> */}
               <button
                 onClick={() => setSidebarOpen((v) => !v)}
                 className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -72,7 +67,7 @@ const DashboardLayout = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <Link to='/'><h1 className="ml-2 md:ml-0 text-xl font-semibold text-gray-900">Freelance Market</h1></Link>
+              <Link to='/'><h1 className="text-xl font-semibold text-gray-900 shadow-2xl">Freelance Market</h1></Link>
             </div>
 
             <div className="flex items-center">
@@ -149,12 +144,12 @@ const DashboardLayout = () => {
           aria-hidden={!sidebarOpen && window.innerWidth < 768}
         >
           <div className="flex flex-col h-full pt-5 pb-4 overflow-y-auto">
-            <div className="flex items-center flex-shrink-0 px-4">
-              <h2 className="text-lg font-semibold text-gray-900">Dashboard</h2>
+            <div className="flex items-center shrink-0 px-4">
+              <Link to='/dashboard' className="text-lg font-semibold md:px-4 text-gray-900 cursor-pointer btn">Dashboard</Link>
             </div>
-            <nav className="mt-5 flex-1 px-2 space-y-1">
+            <nav className="mt-5 flex-1 px-4 md:px-8 space-y-1">
               {menuItems.map((item) => (
-                <Link
+                <NavLink
                   key={item.path}
                   to={item.path}
                   className="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
@@ -162,7 +157,7 @@ const DashboardLayout = () => {
                 >
                   <span className="mr-3">{item.icon}</span>
                   {item.name}
-                </Link>
+                </NavLink>
               ))}
             </nav>
           </div>

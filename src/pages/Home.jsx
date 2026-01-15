@@ -34,7 +34,7 @@ export default function Home() {
       const sorted = [...jobs].sort(
         (a, b) => new Date(b.postedDate) - new Date(a.postedDate)
       );
-      const latestSix = sorted.slice(0, 6);
+      const latestSix = sorted.slice(0, 8);
       setRecentJobs(latestSix);
     }
     
@@ -44,15 +44,15 @@ export default function Home() {
   if (loading)
     return (
       <div className="p-4 text-center">
-        <LoadingSpinner text="Loading..." />
+        <LoadingSpinner />
       </div>
     );
 
   return (
     <div className="w-full overflow-hidden">
       {/* Banner */}
-      <div className="hero min-h-[80vh] bg-indigo-50">
-        <div className="hero-content flex-col lg:flex-row-reverse">
+      <div className="px-5 md:px-16 min-h-[80vh] bg-indigo-50">
+        <div className="hero-content flex-col lg:flex-row-reverse px-5 justify-between">
           <motion.img
             src="https://cdn-icons-png.flaticon.com/512/921/921071.png"
             alt="Banner"
@@ -97,7 +97,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="py-16 px-4 lg:px-20 bg-white">
+      <div className="py-16 px-5 md:px-20 bg-white">
         {/* Title */}
         <div className="text-center mb-4 relative">
           <h2 className="text-3xl font-bold text-indigo-800 inline-block relative">
@@ -115,7 +115,7 @@ export default function Home() {
         </p>
 
         {/* Jobs Grid */}
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 ">
           {recentJobs.map((job) => (
             <JobCard key={job._id} job={job} />
           ))}
@@ -142,7 +142,7 @@ export default function Home() {
         </motion.div>
 
         {/* Categories */}
-        <div className="flex flex-wrap justify-center gap-8">
+        <div className="flex flex-wrap justify-between gap-8 px-5 md:px-20">
           {categories.map((cat) => (
             <motion.div
               key={cat.name}

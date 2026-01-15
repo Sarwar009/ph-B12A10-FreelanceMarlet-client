@@ -99,30 +99,35 @@ console.log("Job email:", job?.userEmail);
 
 
   return (
-    <div className="mx-auto p-6 space-y-12 text-gray-700">
+    <div className="mx-auto p-6 space-y-12">
       <div className="relative rounded-sm overflow-hidden shadow-lg">
         <img
           src={job.coverImage}
           alt={job.title}
           className="w-full h-72 object-cover brightness-90"
         />
-        <div className="absolute inset-0 flex flex-col justify-end p-6 bg-linear-to-t from-white/80 to-transparent">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2 text-gray-800">
+        <div className="absolute inset-0 flex flex-col justify-end p-6">
+          <div className="flex flex-col">
+            <h1 className="text-4xl md:text-5xl font-bold mb-2">
             {job.title}
           </h1>
+          <p className="py-1 rounded-full text-sm">
+              {job.category}
+            </p>
+          </div>
         </div>
           <div className="absolute top-4 right-4 flex gap-3">
   {isOwner() ? (
     <>
       <Link
         to={`/updateJob/${job._id}`}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition"
+        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-sm font-medium transition"
       >
         <Pencil size={16} /> Update
       </Link>
       <button
         onClick={handleDelete}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium transition"
+        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-sm font-medium transition"
       >
         <Trash2 size={16} /> Delete
       </button>
@@ -132,7 +137,7 @@ console.log("Job email:", job?.userEmail);
       ) : (
         <button
           onClick={handleAccept}
-          className="btn bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+          className="btn bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg"
         >
           Accept Job
         </button>
@@ -144,29 +149,28 @@ console.log("Job email:", job?.userEmail);
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-white rounded-3xl shadow-xl p-8 space-y-6"
+        className="rounded-3xl shadow-xl p-8 space-y-6"
       >
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-          <h2 className="text-2xl font-bold text-gray-800">{job.title}</h2>
+          <h2 className="text-2xl font-bold">{job.title}</h2>
+          
           <div className="flex flex-wrap gap-2">
-            <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
-              {job.category}
-            </span>
-            <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
+            
+            <span className=" px-3 py-1 rounded-full text-sm">
               Posted by: {job.postedBy}
             </span>
-            <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
-              {job.postedDate}
+            <span className=" px-3 py-1 rounded-full text-sm">
+              Posted Date: {job.postedDate}
             </span>
           </div>
         </div>
 
         <div className="space-y-4">
-          <p className="text-gray-700">{job.summary}</p>
+          <p>{job.summary}</p>
 
           <div>
-            <h3 className="font-semibold text-gray-800 mb-2">Requirements:</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
+            <h3 className="font-semibold mb-2">Requirements:</h3>
+            <ul className="list-disc list-inside space-y-1">
               <li>Experience in {job.category}</li>
               <li>Strong communication skills</li>
               <li>Portfolio of previous projects</li>
@@ -175,12 +179,12 @@ console.log("Job email:", job?.userEmail);
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-800 mb-2">Skills:</h3>
+            <h3 className="font-semibold  mb-2">Skills:</h3>
             <div className="flex flex-wrap gap-2">
               {job.skills?.map((skill) => (
                 <span
                   key={skill}
-                  className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
+                  className="bg-gray-100  px-3 py-1 rounded-full text-sm"
                 >
                   {skill}
                 </span>
@@ -191,16 +195,16 @@ console.log("Job email:", job?.userEmail);
 
         <div className="grid md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
           <div>
-            <p className="text-gray-600 font-semibold">Experience:</p>
-            <p className="text-gray-700">{job.experience || "Not specified"}</p>
+            <p className=" font-semibold">Experience:</p>
+            <p className="">{job.experience || "Not specified"}</p>
           </div>
           <div>
-            <p className="text-gray-600 font-semibold">Job Type:</p>
-            <p className="text-gray-700">{job.jobType || "Remote/Onsite"}</p>
+            <p className=" font-semibold">Job Type:</p>
+            <p className="">{job.jobType || "Remote/Onsite"}</p>
           </div>
           <div>
-            <p className="text-gray-600 font-semibold">Location:</p>
-            <p className="text-gray-700">
+            <p className=" font-semibold">Location:</p>
+            <p className="">
               {job.locationType || "Not specified"}
             </p>
           </div>
@@ -209,7 +213,7 @@ console.log("Job email:", job?.userEmail);
 
       {relatedJobs.length > 0 && (
         <div>
-          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+          <h2 className="text-2xl font-bold mb-6 ">
             Related Jobs
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -218,18 +222,18 @@ console.log("Job email:", job?.userEmail);
                 key={relJob._id}
                 whileHover={{ scale: 1.03 }}
                 onClick={() => navigate(`/allJobs/${relJob._id}`)}
-                className="bg-white rounded-2xl shadow p-5 cursor-pointer hover:shadow-lg transition-all"
+                className=" rounded-2xl shadow p-5 cursor-pointer hover:shadow-lg transition-all"
               >
                 <img
                   src={relJob.coverImage}
                   alt={relJob.title}
                   className="h-40 w-full object-cover rounded-lg mb-3"
                 />
-                <h3 className="text-gray-800 font-semibold text-lg mb-1">
+                <h3 className="font-semibold text-lg mb-1">
                   {relJob.title}
                 </h3>
-                <p className="text-gray-500 text-sm mb-2">{relJob.category}</p>
-                <p className="text-gray-400 text-sm line-clamp-2">
+                <p className="text-sm mb-2">{relJob.category}</p>
+                <p className="text-sm line-clamp-2">
                   {relJob.summary}
                 </p>
               </motion.div>

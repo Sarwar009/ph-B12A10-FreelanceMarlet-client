@@ -59,6 +59,18 @@ const Navbar = () => {
           </NavLink>
         </li>
       )}
+      <li>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            isActive
+              ? "text-primary font-semibold bg-primary/10 rounded-lg"
+              : "hover:text-primary hover:bg-base-200 rounded-lg"
+          }
+        >
+          Contact
+        </NavLink>
+      </li>
     </>
   );
 
@@ -108,7 +120,7 @@ const Navbar = () => {
             )}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost text-xl header">
+        <Link to="/" className="text-xl header px-5 md:px-20">
           Freelance Market
         </Link>
       </div>
@@ -116,14 +128,16 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
 
-      <div className="flex flex-row navbar-end">
+      <div className="flex flex-row navbar-end px-5 md:px-20">
         {user ? (
           <div className="items-center gap-3 flex">
-            <img
+            <NavLink to='/dashboard/profile'>
+              <img
               src={user.photoURL}
               alt={user.displayName}
               className="w-8 h-8 rounded-full"
             />
+            </NavLink>
             <button onClick={logout} className="btn btn-sm hidden md:flex">
               Log Out
             </button>

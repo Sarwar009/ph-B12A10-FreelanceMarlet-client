@@ -1,32 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router";
 import { Trash2 } from "lucide-react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { useAuth } from "../../contexts/AuthProvider";
+import useApi from "../../hooks/useApi";
 
 const JobCard = ({ job, onDelete, loading }) => {
-  const { API, user, setAcceptedTasks, accessToken } = useAuth();
+  const { user, setAcceptedTasks } = useAuth();
   const navigate = useNavigate();
-  const isOwner = user?.email === job?.userEmail;
+  const api = useApi();
+  const isOwner = user?.email && (user.email === job?.userEmail || user.email === job?.buyer_email);
 
-  const [acceptJob, setAcceptJob] = useState(job); // track acceptedBy
+  const [acceptJob, setAcceptJob] = useState(job); 
+
+  useEffect(() => {
+    setAcceptJob(job);
+  }, [job]);
 
   const handleAccept = async () => {
     if (!user?.email) return toast.error("Login first to accept this job");
 
+    const prevJob = { ...acceptJob };
+    setAcceptJob((prev) => ({ ...prev, acceptedBy: user.email }));
+
     try {
-      await axios.patch(`${API}/my-accepted-tasks/${job._id}`, { acceptedBy: user.email }, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // <-- এইটা দরকার
-        },
-      });
-      setAcceptJob(prev => ({ ...prev, acceptedBy: user.email }));
-      setAcceptedTasks(prev => [...prev, { ...job, acceptedBy: user.email }]);
+      await api.patch(`/my-accepted-tasks/${job._id}`, { acceptedBy: user.email });
+      if (setAcceptedTasks) {
+        setAcceptedTasks((prev) => [...prev, { ...job, acceptedBy: user.email }]);
+      }
       toast.success("Job accepted!");
     } catch (err) {
+      setAcceptJob(prevJob);
       console.error(err);
       toast.error("Failed to accept job");
     }
@@ -35,7 +41,7 @@ const JobCard = ({ job, onDelete, loading }) => {
   const handleDelete = async () => {
     if (!onDelete) return;
     try {
-      await axios.delete(`${API}/deleteJob/${job._id}`);
+      await api.delete(`/deleteJob/${job._id}`);
       onDelete(job._id);
       toast.success("Job deleted successfully");
     } catch (error) {
@@ -45,6 +51,7 @@ const JobCard = ({ job, onDelete, loading }) => {
   };
 
   if (loading) return <LoadingSpinner />;
+  if (!job) return null;
   console.log(job);
   
 
@@ -54,12 +61,12 @@ const JobCard = ({ job, onDelete, loading }) => {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
-      className="relative bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group"
+      className="relative bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group h-100"
     >
       {/* Image */}
       <div className="relative h-48 w-full overflow-hidden">
         <img
-          src={job.coverImage}
+          src={job.coverImage || job.image}
           alt={job.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
@@ -78,12 +85,12 @@ const JobCard = ({ job, onDelete, loading }) => {
 
         <div className="absolute bottom-2 left-3 text-xs text-white flex items-center gap-4 drop-shadow">
           <p className="bg-indigo-400/70 px-2 py-1 rounded-md">{job.postedBy}</p>
-          <p className="bg-white/30 px-2 py-1 rounded-md backdrop-blur-sm">{job.postedDate}</p>
+          <p className="bg-white/30 px-2 py-1 rounded-md backdrop-blur-sm">{job.postedDate || job.deadline}</p>
         </div>
       </div>
 
       {/* Job Info */}
-      <div className="p-5">
+      <div className="p-3">
         <h3
           className="text-xl font-semibold text-indigo-700 mb-1 group-hover:text-indigo-800 transition-colors cursor-pointer"
           onClick={() => navigate(`/allJobs/${job._id}`)}
@@ -91,10 +98,10 @@ const JobCard = ({ job, onDelete, loading }) => {
           {job.title}
         </h3>
         <p className="text-sm text-gray-500 font-medium mb-2">{job.category}</p>
-        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">{job.summary}</p>
+        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">{job.summary || job.description}</p>
 
         {/* Action Buttons */}
-        <div className="flex gap-4 mt-2">
+        <div className="flex gap-4 mt-2 absolute bottom-4 left-3">
           <Link
             to={`/allJobs/${job._id}`}
             className="btn bg-indigo-600 text-white hover:bg-indigo-700"
