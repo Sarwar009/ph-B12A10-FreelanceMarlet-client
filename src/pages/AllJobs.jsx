@@ -105,7 +105,7 @@ const Home = () => {
         />
       </motion.div>
 
-      <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6 pt-12">
+      <div className="px-5 md:px-20 mx-auto p-6 grid md:grid-cols-3 lg:grid-cols-4 gap-4 pt-12">
         {Array.isArray(filteredJobs) && filteredJobs.length > 0 ? (
           filteredJobs.map((job) => (
             <JobCard
