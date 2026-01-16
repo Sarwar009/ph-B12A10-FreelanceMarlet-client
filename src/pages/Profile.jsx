@@ -51,14 +51,14 @@ export default function Profile() {
 
   return (
     <div className="max-w-2xl mx-auto p-6 rounded-2xl shadow-md transition-colors duration-300">
-      <h2 className="text-2xl font-semibold mb-6">
+      <h2 className="text-2xl font-semibold mb-6 text-indigo-800">
         Profile
       </h2>
 
       <div className="flex flex-col space-y-4">
         {/* Name */}
         <div className="flex flex-col">
-          <label className="font-medium">
+          <label className="font-medium text-indigo-800">
             Name
           </label>
           <input
@@ -71,7 +71,7 @@ export default function Profile() {
 
         {/* Phone */}
         <div className="flex flex-col">
-          <label className="font-medium">
+          <label className="font-medium text-indigo-800">
             Phone
           </label>
           <input
@@ -84,7 +84,7 @@ export default function Profile() {
 
         {/* Location */}
         <div className="flex flex-col">
-          <label className="font-medium">
+          <label className="font-medium text-indigo-800">
             Location
           </label>
           <input
@@ -97,7 +97,7 @@ export default function Profile() {
 
         {/* Photo */}
         <div className="flex flex-col">
-          <label className="font-medium">
+          <label className="font-medium text-indigo-800">
             Profile Photo URL
           </label>
           <input

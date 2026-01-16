@@ -19,14 +19,14 @@ const FilterBar = ({
         </h2>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-2xl bg-white gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-center p-4 rounded-xl shadow-2xl  gap-4">
 
         {/* Category Filter */}
         <div className="flex items-center gap-3">
           <select
             value={selectedCategory}
             onChange={e => onFilterChange(e.target.value)}
-            className="select select-bordered w-56 text-gray-800 border-b-blue-300 light:text-white bg-white"
+            className="select select-bordered w-56  border-b-blue-300 light:text-white "
           >
             <option value="">All Categories</option>
             {categories.map((cat, index) => (
@@ -42,7 +42,7 @@ const FilterBar = ({
           <select
             value={dateFilter}
             onChange={e => onDateFilterChange(e.target.value)}
-            className="select select-bordered w-56 text-gray-800 border-b-blue-300 light:text-white bg-white"
+            className="select select-bordered w-56 border-b-blue-300 light:text-white"
           >
             <option value="">Sort by Date</option>
             <option value="newest">Newest First</option>
@@ -58,7 +58,7 @@ const FilterBar = ({
               value={searchQuery}
               onChange={e => onSearchChange(e.target.value)}
               placeholder="Search jobs by title..."
-              className="input input-bordered w-full text-gray-800 border-b-blue-300 light:text-white pr-10 bg-white"
+              className="input input-bordered w-full border-b-blue-300 light:text-white pr-10 "
             />
             <Search
               className="absolute right-3 top-3 text-gray-500 z-10"

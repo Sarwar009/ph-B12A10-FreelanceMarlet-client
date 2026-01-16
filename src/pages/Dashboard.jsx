@@ -235,14 +235,14 @@ const doughnutData = {
       {/* ---------- Charts ---------- */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="p-5 bg-white rounded-2xl shadow border">
-          <h3 className="font-semibold mb-3">Jobs by Category</h3>
+          <h3 className="font-semibold mb-3 text-indigo-800">Jobs by Category</h3>
           <div className="h-[260px]">
             <Bar data={barData} options={chartOptions} />
           </div>
         </div>
 
         <div className="lg:col-span-2 p-5 bg-white rounded-2xl shadow border">
-          <h3 className="font-semibold mb-3">Jobs Over Time</h3>
+          <h3 className="font-semibold mb-3 text-indigo-800">Jobs Over Time</h3>
           <div className="h-[260px]">
             <Line data={lineData} options={chartOptions} />
           </div>
@@ -252,7 +252,7 @@ const doughnutData = {
       {/* ---------- Status Chart ---------- */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="p-5 bg-white rounded-2xl shadow border">
-          <h3 className="font-semibold mb-3">Job Status Overview</h3>
+          <h3 className="font-semibold mb-3 text-indigo-800">Job Status Overview</h3>
           <div className="h-[220px] flex justify-center items-center">
             <Doughnut data={doughnutData} />
           </div>
@@ -261,7 +261,7 @@ const doughnutData = {
 
       {/* ---------- Recent Jobs ---------- */}
       <section className="p-5 bg-white rounded-2xl shadow border">
-        <h3 className="font-semibold mb-4">Recent Jobs</h3>
+        <h3 className="font-bold mb-4 text-indigo-800">Recent Jobs</h3>
         <ul className="space-y-3">
           {recentJobsList.map(job => (
             <li
@@ -269,7 +269,7 @@ const doughnutData = {
               className="flex justify-between items-center p-3 rounded-lg hover:bg-gray-50"
             >
               <div>
-                <p className="font-medium">{job.title}</p>
+                <p className="font-medium text-gray-500">{job.title}</p>
                 <p className="text-sm text-gray-500">{job.category}</p>
               </div>
               <div className="text-sm text-gray-500">

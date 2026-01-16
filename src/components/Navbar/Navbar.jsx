@@ -1,11 +1,19 @@
-import React from "react";
-import { Link, NavLink } from "react-router";
+import React, { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { useAuth } from "../../contexts/AuthProvider";
 
 
 const Navbar = () => {
   const { toggleTheme, theme, user, logout, loading } = useAuth();
+
+  
+  const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const links = (
     <>
@@ -77,7 +85,7 @@ const Navbar = () => {
   if (loading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
-    <div className="navbar bg-base-100 shadow-lg border-b border-base-300">
+    <div className="navbar sticky top-0 z-50 bg-base-100 shadow-lg border-b border-base-300">
       <div className="navbar-start">
         <div className="dropdown ">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -131,13 +139,59 @@ const Navbar = () => {
       <div className="flex flex-row navbar-end px-5 md:px-20">
         {user ? (
           <div className="items-center gap-3 flex">
-            <NavLink to='/dashboard/profile'>
-              <img
-              src={user.photoURL}
-              alt={user.displayName}
-              className="w-8 h-8 rounded-full"
-            />
-            </NavLink>
+            <div className="flex items-center">
+              {/* Profile Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  id="user-menu-button"
+                  aria-expanded={dropdownOpen}
+                  aria-haspopup="true"
+                >
+                  <img
+                    className="h-8 w-8 rounded-full"
+                    src={user?.photoURL || 'https://via.placeholder.com/32'}
+                    alt={user?.displayName || 'User'}
+                  />
+                  <span className="ml-2 hidden md:block">{user?.displayName || 'User'}</span>
+                  <svg className="ml-1 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </button>
+
+                {/* Dropdown Menu */}
+                {dropdownOpen && (
+                  <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                    <div className="py-1" role="menu" aria-orientation="vertical">
+                      <Link
+                        to="/dashboard/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        to="/dashboard"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Dashboard Home
+                      </Link>
+                      <button
+                        onClick={() => { handleLogout(); setDropdownOpen(false); }}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
             <button onClick={logout} className="btn btn-sm hidden md:flex">
               Log Out
             </button>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
@@ -11,7 +11,7 @@ const JobCard = ({ job, onDelete, loading }) => {
   const { user, setAcceptedTasks } = useAuth();
   const navigate = useNavigate();
   const api = useApi();
-  const isOwner = user?.email && (user.email === job?.userEmail || user.email === job?.buyer_email);
+  const isOwner = user?.email && (user?.email === job?.userEmail || user?.email === job?.buyer_email);
 
   const [acceptJob, setAcceptJob] = useState(job); 
 
@@ -23,12 +23,12 @@ const JobCard = ({ job, onDelete, loading }) => {
     if (!user?.email) return toast.error("Login first to accept this job");
 
     const prevJob = { ...acceptJob };
-    setAcceptJob((prev) => ({ ...prev, acceptedBy: user.email }));
+    setAcceptJob((prev) => ({ ...prev, acceptedBy: user?.email }));
 
     try {
-      await api.patch(`/my-accepted-tasks/${job._id}`, { acceptedBy: user.email });
+      await api.patch(`/my-accepted-tasks/${job._id}`, { acceptedBy: user?.email });
       if (setAcceptedTasks) {
-        setAcceptedTasks((prev) => [...prev, { ...job, acceptedBy: user.email }]);
+        setAcceptedTasks((prev) => [...prev, { ...job, acceptedBy: user?.email }]);
       }
       toast.success("Job accepted!");
     } catch (err) {
@@ -50,9 +50,6 @@ const JobCard = ({ job, onDelete, loading }) => {
     }
   };
 
-  if (loading) return <LoadingSpinner />;
-  if (!job) return null;
-  console.log(job);
   
 
   return (
@@ -61,13 +58,13 @@ const JobCard = ({ job, onDelete, loading }) => {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
-      className="relative bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group h-100"
+      className="relative rounded-2xl overflow-hidden shadow-md border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group h-100"
     >
       {/* Image */}
       <div className="relative h-48 w-full overflow-hidden">
         <img
-          src={job.coverImage || job.image}
-          alt={job.title}
+          src={job?.coverImage || job.image}
+          alt={job?.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
@@ -83,7 +80,7 @@ const JobCard = ({ job, onDelete, loading }) => {
           </div>
         )}
 
-        <div className="absolute bottom-2 left-3 text-xs text-white flex items-center gap-4 drop-shadow">
+        <div className="absolute bottom-2 left-3 text-xs flex items-center gap-4 drop-shadow">
           <p className="bg-indigo-400/70 px-2 py-1 rounded-md">{job.postedBy}</p>
           <p className="bg-white/30 px-2 py-1 rounded-md backdrop-blur-sm">{job.postedDate || job.deadline}</p>
         </div>
@@ -97,8 +94,8 @@ const JobCard = ({ job, onDelete, loading }) => {
         >
           {job.title}
         </h3>
-        <p className="text-sm text-gray-500 font-medium mb-2">{job.category}</p>
-        <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">{job.summary || job.description}</p>
+        <p className="text-sm font-medium mb-2">{job.category}</p>
+        <p className=" text-sm leading-relaxed line-clamp-3">{job.summary || job.description}</p>
 
         {/* Action Buttons */}
         <div className="flex gap-4 mt-2 absolute bottom-4 left-3">

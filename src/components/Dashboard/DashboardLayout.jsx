@@ -145,7 +145,7 @@ const DashboardLayout = () => {
         >
           <div className="flex flex-col h-full pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center shrink-0 px-4">
-              <Link to='/dashboard' className="text-lg font-semibold md:px-4 text-gray-900 cursor-pointer btn">Dashboard</Link>
+              <Link to='/dashboard' className="text-lg font-semibold md:px-4 cursor-pointer text-indigo-800">Dashboard</Link>
             </div>
             <nav className="mt-5 flex-1 px-4 md:px-8 space-y-1">
               {menuItems.map((item) => (
